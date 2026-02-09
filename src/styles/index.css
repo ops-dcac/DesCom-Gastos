@@ -284,7 +284,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--accent-blue);
+  color: #3b82f6;
 }
 
 .filter-badge {
@@ -474,6 +474,7 @@ body {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: #3b82f6;
 }
 
 /* Composition Bar */
@@ -1080,6 +1081,10 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.header-titles h2 {
+  color: #3b82f6;
+}
+
 .header-titles p {
   color: var(--text-secondary);
 }
@@ -1463,5 +1468,174 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+  }
+}
+
+/* ============ FLOTA ============ */
+.flota-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.flota-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.flota-header h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+  color: #3b82f6;
+}
+
+.flota-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.flota-table-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.flota-table-card h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #3b82f6;
+}
+
+.flota-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.flota-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.flota-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--bg-hover);
+  font-size: 0.9rem;
+}
+
+.flota-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar-mini {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--accent-blue);
+  font-size: 0.8rem;
+}
+
+.flota-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.efficiency-rankings {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.efficiency-rankings h3 {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  color: #3b82f6;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s;
+}
+
+.ranking-item:hover {
+  border-color: var(--accent-blue);
+  transform: translateX(4px);
+}
+
+.rank-pos {
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  margin-right: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.ranking-item:nth-child(1) .rank-pos {
+  background: #fef3c7;
+  color: #d97706;
+  border-color: #fcd34d;
+}
+
+.rank-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.rank-value {
+  font-weight: 700;
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .flota-grid {
+    grid-template-columns: 1fr;
   }
 }
