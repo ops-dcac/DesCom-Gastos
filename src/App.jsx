@@ -264,6 +264,9 @@ function App() {
     const [filtroTipoVehiculo, setFiltroTipoVehiculo] = useState(''); // '' | 'propio' | 'dcac'
     const [mostrarSoloConCombustible, setMostrarSoloConCombustible] = useState(false);
 
+    // Estados para modales de KPIs
+    const [modalKpiActivo, setModalKpiActivo] = useState(null); // 'cv' | 'top20' | 'distribucion' | null
+
     // Filtros de auditoría
     const [filtroFechaDesde, setFiltroFechaDesde] = useState('')
     const [filtroFechaHasta, setFiltroFechaHasta] = useState('')
@@ -607,15 +610,21 @@ function App() {
         });
 
         const coefVariacion = Object.entries(gastosPorCategoria).map(([cat, usuarios]) => {
-            const valores = Object.values(usuarios);
-            if (valores.length < 2) return { categoria: cat, cv: 0, media: valores[0] || 0, n: valores.length };
+            const entries = Object.entries(usuarios);
+            const valores = entries.map(([, v]) => v);
+            if (valores.length < 2) return { categoria: cat, cv: 0, media: valores[0] || 0, n: valores.length, detalle: [] };
             
             const media = valores.reduce((a, b) => a + b, 0) / valores.length;
             const varianza = valores.reduce((acc, v) => acc + Math.pow(v - media, 2), 0) / valores.length;
             const desvStd = Math.sqrt(varianza);
             const cv = media > 0 ? (desvStd / media) * 100 : 0;
             
-            return { categoria: cat, cv: Math.round(cv), media, desvStd, n: valores.length };
+            // Detalle de usuarios ordenados por gasto (para el modal)
+            const detalle = entries
+                .map(([usuario, gasto]) => ({ usuario, gasto, desvio: gasto - media, desvioPct: ((gasto - media) / media) * 100 }))
+                .sort((a, b) => b.gasto - a.gasto);
+            
+            return { categoria: cat, cv: Math.round(cv), media, desvStd, n: valores.length, detalle };
         }).sort((a, b) => b.cv - a.cv);
 
         // ========== 2. Top 20% Gastadores vs Promedio ==========
@@ -625,13 +634,14 @@ function App() {
         });
         
         const usuariosOrdenados = Object.entries(totalPorUsuario)
-            .sort((a, b) => b[1] - a[1]);
+            .map(([usuario, total]) => ({ usuario, total }))
+            .sort((a, b) => b.total - a.total);
         
         const cantidadTop20 = Math.max(1, Math.ceil(usuariosOrdenados.length * 0.2));
-        const top20 = usuariosOrdenados.slice(0, cantidadTop20);
+        const top20Lista = usuariosOrdenados.slice(0, cantidadTop20);
         
-        const promedioGeneral = usuariosOrdenados.reduce((acc, [, v]) => acc + v, 0) / usuariosOrdenados.length;
-        const promedioTop20 = top20.reduce((acc, [, v]) => acc + v, 0) / top20.length;
+        const promedioGeneral = usuariosOrdenados.reduce((acc, u) => acc + u.total, 0) / usuariosOrdenados.length;
+        const promedioTop20 = top20Lista.reduce((acc, u) => acc + u.total, 0) / top20Lista.length;
         const ratioTop20 = promedioGeneral > 0 ? promedioTop20 / promedioGeneral : 0;
 
         // ========== 3. Distribución por Categoría (flags) ==========
@@ -643,13 +653,21 @@ function App() {
         };
 
         const flagsDistribucion = [];
-        Object.entries(totalPorUsuario).forEach(([usuario, totalUsuario]) => {
+        Object.entries(totalPorUsuario).forEach(([usuario, totalUsuarioVal]) => {
+            const totalUsuario = typeof totalUsuarioVal === 'object' ? totalUsuarioVal.total : totalUsuarioVal;
             if (totalUsuario === 0) return;
             
             const gastosPorCat = {};
             dataPeriodo.filter(r => r.usuario === usuario).forEach(r => {
                 gastosPorCat[r.categoria] = (gastosPorCat[r.categoria] || 0) + r.importe;
             });
+
+            // Calcular distribución completa del usuario
+            const distribucionUsuario = Object.entries(gastosPorCat).map(([cat, gasto]) => ({
+                categoria: cat,
+                gasto,
+                porcentaje: Math.round((gasto / totalUsuario) * 100)
+            })).sort((a, b) => b.porcentaje - a.porcentaje);
 
             Object.entries(gastosPorCat).forEach(([cat, gasto]) => {
                 const pct = (gasto / totalUsuario) * 100;
@@ -658,9 +676,14 @@ function App() {
                     flagsDistribucion.push({
                         usuario,
                         categoria: esperado.nombre,
+                        categoriaOriginal: cat,
                         porcentaje: Math.round(pct),
+                        esperadoMin: esperado.min,
                         esperadoMax: esperado.max,
-                        exceso: Math.round(pct - esperado.max)
+                        exceso: Math.round(pct - esperado.max),
+                        totalUsuario,
+                        gastoCategoria: gasto,
+                        distribucionCompleta: distribucionUsuario
                     });
                 }
             });
@@ -704,15 +727,19 @@ function App() {
 
         return {
             coefVariacion: coefVariacion.slice(0, 6), // Top 6 categorías
+            coefVariacionCompleto: coefVariacion, // Todas las categorías para el modal
             top20: {
                 promedio: promedioTop20,
                 promedioGeneral,
                 ratio: ratioTop20,
                 cantidad: cantidadTop20,
                 totalUsuarios: usuariosOrdenados.length,
-                esProblema: ratioTop20 > 2
+                esProblema: ratioTop20 > 2,
+                lista: top20Lista // Lista completa del top 20% para el modal
             },
             flagsDistribucion: flagsDistribucion.slice(0, 5), // Top 5 flags
+            flagsDistribucionCompleto: flagsDistribucion, // Todos los flags para el modal
+            distribucionEsperada, // Rangos esperados para mostrar en modal
             crecimientoMensual: crecimientoMensual.slice(0, 5) // Top 5 con crecimiento
         };
     }, [rawData, mesSeleccionado, modoFecha]);
@@ -828,6 +855,13 @@ function App() {
             setPersonaSeleccionada(nombre);
             setBusqueda(nombre);
         }
+    };
+
+    // Ir a auditoría con filtros aplicados
+    const irAAuditoria = (usuario, periodo) => {
+        setBusqueda(usuario);
+        setMesSeleccionado(periodo);
+        setActiveTab('auditoria');
     };
 
     if (loading) {
@@ -1265,7 +1299,7 @@ function App() {
                             {kpisDesvios && (
                                 <div className="kpis-desvios-grid">
                                     {/* KPI 1: Coeficiente de Variación por Categoría */}
-                                    <div className="kpi-card">
+                                    <div className="kpi-card clickable" onClick={() => setModalKpiActivo('cv')}>
                                         <div className="kpi-header">
                                             <h4>📊 Coef. Variación por Categoría</h4>
                                             <span className="kpi-hint">CV = Desv.Std / Media × 100</span>
@@ -1291,10 +1325,11 @@ function App() {
                                             <span className="legend-item warning">●40-60% Variable</span>
                                             <span className="legend-item danger">●&gt;60% Investigar</span>
                                         </div>
+                                        <div className="kpi-click-hint" title="Ver explicación y desglose">Click para ver detalle <span aria-hidden="true">→</span></div>
                                     </div>
 
                                     {/* KPI 2: Top 20% vs Promedio */}
-                                    <div className="kpi-card">
+                                    <div className="kpi-card clickable" onClick={() => setModalKpiActivo('top20')}>
                                         <div className="kpi-header">
                                             <h4>🏆 Top 20% Gastadores</h4>
                                             <span className="kpi-hint">Comparativa con promedio general</span>
@@ -1320,10 +1355,11 @@ function App() {
                                         <div className={`kpi-alert ${kpisDesvios.top20.esProblema ? 'show' : ''}`}>
                                             ⚠️ Ratio &gt;2x indica problema de control
                                         </div>
+                                        <div className="kpi-click-hint" title="Ver explicación y desglose">Click para ver detalle <span aria-hidden="true">→</span></div>
                                     </div>
 
                                     {/* KPI 3: Flags de Distribución */}
-                                    <div className="kpi-card">
+                                    <div className="kpi-card clickable" onClick={() => setModalKpiActivo('distribucion')}>
                                         <div className="kpi-header">
                                             <h4>🚩 Distribución Anómala</h4>
                                             <span className="kpi-hint">% de categoría fuera de rango esperado</span>
@@ -1343,13 +1379,14 @@ function App() {
                                                 <div className="no-flags">✓ Sin anomalías detectadas</div>
                                             )}
                                         </div>
+                                        <div className="kpi-click-hint" title="Ver explicación y desglose">Click para ver detalle <span aria-hidden="true">→</span></div>
                                     </div>
 
                                     {/* KPI 4: Crecimiento Mensual */}
                                     <div className="kpi-card">
                                         <div className="kpi-header">
                                             <h4>📈 Crecimiento Mensual</h4>
-                                            <span className="kpi-hint">Usuarios con aumento &gt;15% intermensual</span>
+                                            <span className="kpi-hint">Comparado con mes anterior (&gt;15%)</span>
                                         </div>
                                         <div className="kpi-content growth-list">
                                             {kpisDesvios.crecimientoMensual.length > 0 ? (
@@ -1370,6 +1407,9 @@ function App() {
                                                 <div className="no-growth">✓ Sin crecimientos sospechosos</div>
                                             )}
                                         </div>
+                                        <div className="kpi-info-note">
+                                            ℹ️ Se compara el gasto total del mes actual vs. el mes inmediatamente anterior
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -1389,7 +1429,15 @@ function App() {
                                         >
                                             <div className="alerta-summary">
                                                 <div className="rank-col">#{i + 1}</div>
-                                                <div className="name-col">{a.usuario}</div>
+                                                <div className="name-col">
+                                                    {a.usuario}
+                                                    <button 
+                                                        className="btn-auditoria-mini"
+                                                        onClick={(e) => { e.stopPropagation(); irAAuditoria(a.usuario, mesSeleccionado); }}
+                                                    >
+                                                        <Icons.Audit /> Auditoría
+                                                    </button>
+                                                </div>
 
                                                 <div className="stats-col">
                                                     <div className="stat-mini">
@@ -1434,6 +1482,9 @@ function App() {
                                                                 </strong>
                                                             </div>
                                                         </div>
+                                                        <div style={{fontSize: '0.85em', color: 'var(--text-muted)', marginTop: '0.7em', lineHeight: 1.4}}>
+                                                            <span>Despliega para ver evolución y desglose de gastos. Haz click fuera para cerrar.</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
@@ -1445,6 +1496,168 @@ function App() {
                             {alertasDesvio.length === 0 && (
                                 <div className="empty-state">
                                     <p>No hay alertas de desvío para mostrar</p>
+                                </div>
+                            )}
+
+                            {/* ========== MODALES DE KPIs ========== */}
+                            {modalKpiActivo && (
+                                <div className="modal-overlay" onClick={() => setModalKpiActivo(null)}>
+                                    <div className="modal-content kpi-modal" onClick={e => e.stopPropagation()}>
+                                        <button className="modal-close" onClick={() => setModalKpiActivo(null)}>
+                                            <Icons.Close />
+                                        </button>
+
+                                        {/* Modal: Coeficiente de Variación */}
+                                        {modalKpiActivo === 'cv' && kpisDesvios && (
+                                            <>
+                                                <h2>📊 Coeficiente de Variación por Categoría</h2>
+                                                <p className="modal-subtitle">
+                                                    El CV mide qué tan dispersos están los gastos entre usuarios. 
+                                                    Un CV alto significa que hay mucha diferencia entre lo que gasta cada persona.
+                                                </p>
+                                                
+                                                <div className="modal-cv-grid">
+                                                    {kpisDesvios.coefVariacionCompleto.map(cat => (
+                                                        <div key={cat.categoria} className="modal-cv-category">
+                                                            <div className="modal-cv-header">
+                                                                <h4>{cat.categoria}</h4>
+                                                                <span className={`modal-cv-badge ${cat.cv > 60 ? 'danger' : cat.cv > 40 ? 'warning' : 'ok'}`}>
+                                                                    CV: {cat.cv}%
+                                                                </span>
+                                                            </div>
+                                                            <div className="modal-cv-stats">
+                                                                <span>Media: {formatCurrency(cat.media)}</span>
+                                                                <span>Usuarios: {cat.n}</span>
+                                                            </div>
+                                                            <div className="modal-cv-interpretation">
+                                                                {cat.cv > 60 ? (
+                                                                    <span className="danger">⚠️ MUY variable - Investigar diferencias</span>
+                                                                ) : cat.cv > 40 ? (
+                                                                    <span className="warning">⚡ Moderado - Revisar outliers</span>
+                                                                ) : (
+                                                                    <span className="ok">✓ Estable - Gastos consistentes</span>
+                                                                )}
+                                                            </div>
+                                                            {cat.detalle && cat.detalle.length > 0 && (
+                                                                <div className="modal-cv-users">
+                                                                    <strong>Top gastadores:</strong>
+                                                                    {cat.detalle.slice(0, 5).map((u, i) => (
+                                                                        <div key={i} className="modal-cv-user">
+                                                                            <span>{u.usuario}</span>
+                                                                            <span>{formatCurrency(u.gasto)}</span>
+                                                                            <span className={u.desvioPct > 50 ? 'danger' : u.desvioPct > 20 ? 'warning' : ''}>
+                                                                                {u.desvioPct > 0 ? '+' : ''}{u.desvioPct.toFixed(0)}% vs media
+                                                                            </span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {/* Modal: Top 20% */}
+                                        {modalKpiActivo === 'top20' && kpisDesvios && (
+                                            <>
+                                                <h2>🏆 Top 20% Gastadores vs Promedio</h2>
+                                                <p className="modal-subtitle">
+                                                    Comparamos el 20% que más gasta con el promedio general. 
+                                                    Si el ratio es mayor a 2x, hay un problema de control de gastos.
+                                                </p>
+                                                
+                                                <div className="modal-top20-summary">
+                                                    <div className="modal-top20-big">
+                                                        <span className={`ratio ${kpisDesvios.top20.esProblema ? 'danger' : 'ok'}`}>
+                                                            {kpisDesvios.top20.ratio.toFixed(2)}x
+                                                        </span>
+                                                        <span className="label">Ratio Top 20% / Promedio</span>
+                                                    </div>
+                                                    <div className="modal-top20-comparison">
+                                                        <div>
+                                                            <strong>Promedio Top 20%</strong>
+                                                            <span>{formatCurrency(kpisDesvios.top20.promedio)}</span>
+                                                        </div>
+                                                        <div>
+                                                            <strong>Promedio General</strong>
+                                                            <span>{formatCurrency(kpisDesvios.top20.promedioGeneral)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <h4>Listado del Top 20% ({kpisDesvios.top20.cantidad} de {kpisDesvios.top20.totalUsuarios} personas)</h4>
+                                                <div className="modal-top20-list">
+                                                    {kpisDesvios.top20.lista.map((u, i) => (
+                                                        <div key={i} className="modal-top20-item">
+                                                            <span className="pos">#{i + 1}</span>
+                                                            <span className="name">{u.usuario}</span>
+                                                            <span className="amount">{formatCurrency(u.total)}</span>
+                                                            <span className="vs-avg">
+                                                                {((u.total / kpisDesvios.top20.promedioGeneral - 1) * 100).toFixed(0)}% vs promedio
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {/* Modal: Distribución Anómala */}
+                                        {modalKpiActivo === 'distribucion' && kpisDesvios && (
+                                            <>
+                                                <h2>🚩 Distribución Anómala de Gastos</h2>
+                                                <p className="modal-subtitle">
+                                                    Detectamos usuarios cuyo porcentaje de gasto en una categoría excede el rango esperado.
+                                                </p>
+
+                                                <div className="modal-dist-expected">
+                                                    <h4>Rangos Esperados por Categoría</h4>
+                                                    <div className="modal-dist-ranges">
+                                                        {Object.entries(kpisDesvios.distribucionEsperada).map(([cat, rango]) => (
+                                                            <div key={cat} className="range-item">
+                                                                <span className="cat">{rango.nombre}</span>
+                                                                <span className="range">{rango.min}% - {rango.max}%</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {kpisDesvios.flagsDistribucionCompleto.length > 0 ? (
+                                                    <div className="modal-dist-flags">
+                                                        <h4>Anomalías Detectadas ({kpisDesvios.flagsDistribucionCompleto.length})</h4>
+                                                        {kpisDesvios.flagsDistribucionCompleto.map((f, i) => (
+                                                            <div key={i} className="modal-dist-flag">
+                                                                <div className="flag-header">
+                                                                    <strong>{f.usuario}</strong>
+                                                                    <span className="flag-alert">
+                                                                        {f.porcentaje}% en {f.categoria} (máx: {f.esperadoMax}%)
+                                                                    </span>
+                                                                </div>
+                                                                <div className="flag-distribution">
+                                                                    {f.distribucionCompleta && f.distribucionCompleta.map((d, j) => (
+                                                                        <div key={j} className="dist-bar-item">
+                                                                            <span className="dist-cat">{d.categoria}</span>
+                                                                            <div className="dist-bar-wrapper">
+                                                                                <div 
+                                                                                    className={`dist-bar ${d.categoria === f.categoriaOriginal ? 'highlight' : ''}`}
+                                                                                    style={{ width: `${d.porcentaje}%` }}
+                                                                                />
+                                                                            </div>
+                                                                            <span className="dist-pct">{d.porcentaje}%</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <div className="modal-no-flags">
+                                                        ✓ No se detectaron anomalías en la distribución de gastos
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
