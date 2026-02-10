@@ -584,6 +584,139 @@ function App() {
             .sort((a, b) => b.desvioMonto - a.desvioMonto);
     }, [rawData, mesSeleccionado, modoFecha]);
 
+    // ============ KPIs AVANZADOS - Análisis de Desvíos ============
+    const kpisDesvios = useMemo(() => {
+        if (rawData.length === 0 || !mesSeleccionado) return null;
+
+        const anio = mesSeleccionado.slice(0, 4);
+        const mesLimite = mesSeleccionado;
+        
+        // Filtrar datos según el modo
+        const dataPeriodo = modoFecha === 'anio'
+            ? rawData.filter(r => r.periodo.startsWith(anio) && r.periodo <= mesLimite)
+            : rawData.filter(r => r.periodo === mesSeleccionado);
+
+        if (dataPeriodo.length === 0) return null;
+
+        // ========== 1. Coeficiente de Variación por Categoría ==========
+        const gastosPorCategoria = {};
+        dataPeriodo.forEach(r => {
+            if (!gastosPorCategoria[r.categoria]) gastosPorCategoria[r.categoria] = {};
+            if (!gastosPorCategoria[r.categoria][r.usuario]) gastosPorCategoria[r.categoria][r.usuario] = 0;
+            gastosPorCategoria[r.categoria][r.usuario] += r.importe;
+        });
+
+        const coefVariacion = Object.entries(gastosPorCategoria).map(([cat, usuarios]) => {
+            const valores = Object.values(usuarios);
+            if (valores.length < 2) return { categoria: cat, cv: 0, media: valores[0] || 0, n: valores.length };
+            
+            const media = valores.reduce((a, b) => a + b, 0) / valores.length;
+            const varianza = valores.reduce((acc, v) => acc + Math.pow(v - media, 2), 0) / valores.length;
+            const desvStd = Math.sqrt(varianza);
+            const cv = media > 0 ? (desvStd / media) * 100 : 0;
+            
+            return { categoria: cat, cv: Math.round(cv), media, desvStd, n: valores.length };
+        }).sort((a, b) => b.cv - a.cv);
+
+        // ========== 2. Top 20% Gastadores vs Promedio ==========
+        const totalPorUsuario = {};
+        dataPeriodo.forEach(r => {
+            totalPorUsuario[r.usuario] = (totalPorUsuario[r.usuario] || 0) + r.importe;
+        });
+        
+        const usuariosOrdenados = Object.entries(totalPorUsuario)
+            .sort((a, b) => b[1] - a[1]);
+        
+        const cantidadTop20 = Math.max(1, Math.ceil(usuariosOrdenados.length * 0.2));
+        const top20 = usuariosOrdenados.slice(0, cantidadTop20);
+        
+        const promedioGeneral = usuariosOrdenados.reduce((acc, [, v]) => acc + v, 0) / usuariosOrdenados.length;
+        const promedioTop20 = top20.reduce((acc, [, v]) => acc + v, 0) / top20.length;
+        const ratioTop20 = promedioGeneral > 0 ? promedioTop20 / promedioGeneral : 0;
+
+        // ========== 3. Distribución por Categoría (flags) ==========
+        const distribucionEsperada = {
+            'Hoteleria': { min: 30, max: 45, nombre: 'Hotel' },
+            'Combustible': { min: 20, max: 35, nombre: 'Combustible' },
+            'Comidas': { min: 15, max: 30, nombre: 'Comidas' },
+            'Obra Social': { min: 5, max: 20, nombre: 'Obra Social' }
+        };
+
+        const flagsDistribucion = [];
+        Object.entries(totalPorUsuario).forEach(([usuario, totalUsuario]) => {
+            if (totalUsuario === 0) return;
+            
+            const gastosPorCat = {};
+            dataPeriodo.filter(r => r.usuario === usuario).forEach(r => {
+                gastosPorCat[r.categoria] = (gastosPorCat[r.categoria] || 0) + r.importe;
+            });
+
+            Object.entries(gastosPorCat).forEach(([cat, gasto]) => {
+                const pct = (gasto / totalUsuario) * 100;
+                const esperado = distribucionEsperada[cat];
+                if (esperado && pct > esperado.max) {
+                    flagsDistribucion.push({
+                        usuario,
+                        categoria: esperado.nombre,
+                        porcentaje: Math.round(pct),
+                        esperadoMax: esperado.max,
+                        exceso: Math.round(pct - esperado.max)
+                    });
+                }
+            });
+        });
+        flagsDistribucion.sort((a, b) => b.exceso - a.exceso);
+
+        // ========== 4. Crecimiento Mensual por Asociado ==========
+        const periodos = [...new Set(rawData.map(r => r.periodo))].sort();
+        const mesActualIdx = periodos.indexOf(mesSeleccionado);
+        
+        const crecimientoMensual = [];
+        if (mesActualIdx >= 1) {
+            const mesAnterior = periodos[mesActualIdx - 1];
+            
+            const gastoMesActual = {};
+            const gastoMesAnterior = {};
+            
+            rawData.filter(r => r.periodo === mesSeleccionado).forEach(r => {
+                gastoMesActual[r.usuario] = (gastoMesActual[r.usuario] || 0) + r.importe;
+            });
+            rawData.filter(r => r.periodo === mesAnterior).forEach(r => {
+                gastoMesAnterior[r.usuario] = (gastoMesAnterior[r.usuario] || 0) + r.importe;
+            });
+
+            Object.entries(gastoMesActual).forEach(([usuario, actual]) => {
+                const anterior = gastoMesAnterior[usuario];
+                if (anterior && anterior > 0) {
+                    const crecPct = ((actual - anterior) / anterior) * 100;
+                    if (crecPct > 15) {
+                        crecimientoMensual.push({
+                            usuario,
+                            anterior,
+                            actual,
+                            crecimiento: Math.round(crecPct)
+                        });
+                    }
+                }
+            });
+            crecimientoMensual.sort((a, b) => b.crecimiento - a.crecimiento);
+        }
+
+        return {
+            coefVariacion: coefVariacion.slice(0, 6), // Top 6 categorías
+            top20: {
+                promedio: promedioTop20,
+                promedioGeneral,
+                ratio: ratioTop20,
+                cantidad: cantidadTop20,
+                totalUsuarios: usuariosOrdenados.length,
+                esProblema: ratioTop20 > 2
+            },
+            flagsDistribucion: flagsDistribucion.slice(0, 5), // Top 5 flags
+            crecimientoMensual: crecimientoMensual.slice(0, 5) // Top 5 con crecimiento
+        };
+    }, [rawData, mesSeleccionado, modoFecha]);
+
     // ============ DASHBOARD - Análisis de Eficiencia de Combustible ============
     const eficienciaCombustible = useMemo(() => {
         if (!mesSeleccionado || rawData.length === 0) return [];
@@ -1128,6 +1261,120 @@ function App() {
                                 </div>
                             </div>
 
+                            {/* ========== KPIs AVANZADOS ========== */}
+                            {kpisDesvios && (
+                                <div className="kpis-desvios-grid">
+                                    {/* KPI 1: Coeficiente de Variación por Categoría */}
+                                    <div className="kpi-card">
+                                        <div className="kpi-header">
+                                            <h4>📊 Coef. Variación por Categoría</h4>
+                                            <span className="kpi-hint">CV = Desv.Std / Media × 100</span>
+                                        </div>
+                                        <div className="kpi-content cv-list">
+                                            {kpisDesvios.coefVariacion.map(c => (
+                                                <div key={c.categoria} className="cv-item">
+                                                    <span className="cv-cat">{c.categoria}</span>
+                                                    <div className="cv-bar-wrapper">
+                                                        <div 
+                                                            className={`cv-bar ${c.cv > 60 ? 'danger' : c.cv > 40 ? 'warning' : 'ok'}`}
+                                                            style={{ width: `${Math.min(c.cv, 100)}%` }}
+                                                        />
+                                                    </div>
+                                                    <span className={`cv-value ${c.cv > 60 ? 'danger' : c.cv > 40 ? 'warning' : ''}`}>
+                                                        {c.cv}%
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="kpi-legend">
+                                            <span className="legend-item ok">●&lt;40% Estable</span>
+                                            <span className="legend-item warning">●40-60% Variable</span>
+                                            <span className="legend-item danger">●&gt;60% Investigar</span>
+                                        </div>
+                                    </div>
+
+                                    {/* KPI 2: Top 20% vs Promedio */}
+                                    <div className="kpi-card">
+                                        <div className="kpi-header">
+                                            <h4>🏆 Top 20% Gastadores</h4>
+                                            <span className="kpi-hint">Comparativa con promedio general</span>
+                                        </div>
+                                        <div className="kpi-content top20-content">
+                                            <div className="top20-main">
+                                                <div className={`top20-ratio ${kpisDesvios.top20.esProblema ? 'danger' : 'ok'}`}>
+                                                    {kpisDesvios.top20.ratio.toFixed(2)}x
+                                                </div>
+                                                <span className="top20-label">vs promedio</span>
+                                            </div>
+                                            <div className="top20-details">
+                                                <div className="top20-row">
+                                                    <span>Top 20% ({kpisDesvios.top20.cantidad} personas)</span>
+                                                    <strong>{formatCurrency(kpisDesvios.top20.promedio)}</strong>
+                                                </div>
+                                                <div className="top20-row">
+                                                    <span>Promedio General</span>
+                                                    <strong>{formatCurrency(kpisDesvios.top20.promedioGeneral)}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={`kpi-alert ${kpisDesvios.top20.esProblema ? 'show' : ''}`}>
+                                            ⚠️ Ratio &gt;2x indica problema de control
+                                        </div>
+                                    </div>
+
+                                    {/* KPI 3: Flags de Distribución */}
+                                    <div className="kpi-card">
+                                        <div className="kpi-header">
+                                            <h4>🚩 Distribución Anómala</h4>
+                                            <span className="kpi-hint">% de categoría fuera de rango esperado</span>
+                                        </div>
+                                        <div className="kpi-content flags-list">
+                                            {kpisDesvios.flagsDistribucion.length > 0 ? (
+                                                kpisDesvios.flagsDistribucion.map((f, i) => (
+                                                    <div key={i} className="flag-item">
+                                                        <span className="flag-user">{f.usuario}</span>
+                                                        <span className="flag-detail">
+                                                            <strong>{f.porcentaje}%</strong> en {f.categoria}
+                                                            <span className="flag-expected">(máx esperado: {f.esperadoMax}%)</span>
+                                                        </span>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="no-flags">✓ Sin anomalías detectadas</div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* KPI 4: Crecimiento Mensual */}
+                                    <div className="kpi-card">
+                                        <div className="kpi-header">
+                                            <h4>📈 Crecimiento Mensual</h4>
+                                            <span className="kpi-hint">Usuarios con aumento &gt;15% intermensual</span>
+                                        </div>
+                                        <div className="kpi-content growth-list">
+                                            {kpisDesvios.crecimientoMensual.length > 0 ? (
+                                                kpisDesvios.crecimientoMensual.map((g, i) => (
+                                                    <div key={i} className="growth-item">
+                                                        <span className="growth-user">{g.usuario}</span>
+                                                        <div className="growth-values">
+                                                            <span className="growth-from">{formatCurrency(g.anterior)}</span>
+                                                            <span className="growth-arrow">→</span>
+                                                            <span className="growth-to">{formatCurrency(g.actual)}</span>
+                                                            <span className={`growth-pct ${g.crecimiento > 30 ? 'danger' : 'warning'}`}>
+                                                                +{g.crecimiento}%
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="no-growth">✓ Sin crecimientos sospechosos</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            <h3 className="section-subtitle">Personas con Desvío</h3>
                             <div className="alertas-list">
                                 {alertasDesvio.map((a, i) => {
                                     const isExpanded = expandedAlertId === a.usuario;
