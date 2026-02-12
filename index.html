@@ -974,11 +974,14 @@
             </div>
           </div>
           <div class="card">
-            <div class="card-header">
-              <h3 id="ranking-title">
+            <div class="card-header" style="align-items: flex-start;">
+              <h3 id="ranking-title" style="margin-bottom: 0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V18"/><path d="M14 22V18"/><path d="M18 4H6v11a6 6 0 0 0 12 0V4z"/></svg>
                 Ranking de Gastos
               </h3>
+              <div style="text-align: right;">
+                <div style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">Δ vs mes ant %</div>
+              </div>
             </div>
             <div id="ranking-list" class="ranking-list"></div>
           </div>
@@ -1618,20 +1621,41 @@
         
         const porUsuario = {};
         data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
+        
+        // Calcular valores del mes anterior para deltas
+        const prevPeriodo = getPreviousPeriodo(currentPeriodo);
+        const prevRanking = {};
+        const kmsPrev = prevPeriodo ? getKmsByUserForPeriodo(prevPeriodo) : {};
+        if (prevPeriodo) {
+          let prevData = rawData.filter(r => r.periodo === prevPeriodo);
+          if (tableroModoKm) prevData = prevData.filter(r => (kmsPrev[r.usuario] || 0) > 0);
+          prevData.forEach(r => { prevRanking[r.usuario] = (prevRanking[r.usuario] || 0) + r.importe; });
+        }
+        
         const ranking = Object.entries(porUsuario)
           .map(([nombre, total]) => {
             const kms = kmsMap[nombre] || 0;
             const value = tableroModoKm && kms > 0 ? total / kms : total;
-            return [nombre, value];
+            const prevTotal = prevRanking[nombre] || 0;
+            const prevKms = kmsPrev[nombre] || 0;
+            const prevValue = tableroModoKm && prevKms > 0 ? prevTotal / prevKms : prevTotal;
+            const deltaPct = prevValue > 0 ? ((value - prevValue) / prevValue) * 100 : null;
+            return [nombre, value, deltaPct];
           })
           .sort((a, b) => b[1] - a[1]);
         
-        listEl.innerHTML = ranking.map(([nombre, total], i) => {
+        listEl.innerHTML = ranking.map(([nombre, total, deltaPct], i) => {
+          const deltaSign = deltaPct && deltaPct >= 0 ? '+' : '';
+          const deltaColor = deltaPct === null ? '' : (deltaPct >= 0 ? 'color: var(--red);' : 'color: var(--green);');
+          const deltaHtml = deltaPct === null ? '' : `<span style="font-size: 0.75rem; font-weight: 600; ${deltaColor}">${deltaSign}${deltaPct.toFixed(0)}%</span>`;
           return `
           <div class="ranking-item clickable" onclick="selectPersona('${nombre}')">
             <div class="ranking-pos">${i + 1}</div>
             <span class="ranking-name">${nombre}</span>
-            <span class="ranking-amount">${formatTableroValue(total)}</span>
+            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-left: auto;">
+              <span class="ranking-amount">${formatTableroValue(total)}</span>
+              ${deltaHtml}
+            </div>
           </div>
         `;
         }).join('');
