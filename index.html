@@ -1011,7 +1011,7 @@
       
       <!-- DESVÍOS -->
       <div id="tab-desvios" class="page-container hidden">
-        <div class="page-header">
+        <div class="page-header" style="align-items: flex-start;">
           <div>
             <h2>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -1019,7 +1019,19 @@
             </h2>
             <p>Comparativa de gasto individual vs. promedio del equipo</p>
           </div>
-          <select id="desvios-periodo" onchange="renderDesvios()"></select>
+          <div style="display: flex; gap: 2rem; align-items: flex-end;">
+            <div>
+              <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Período</label>
+              <select id="desvios-periodo" onchange="renderDesvios()" style="padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);"></select>
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Modo</label>
+              <div class="toggle-km-group">
+                <button class="toggle-km-btn active" id="desvios-btn-monto" onclick="setDesviosMode('monto')">$</button>
+                <button class="toggle-km-btn" id="desvios-btn-kms" onclick="setDesviosMode('kms')">$/KMS</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div style="margin-bottom: 1rem;">
           <input type="text" id="desvios-busqueda" placeholder="Buscar usuario..." style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;" oninput="renderDesvios()">
@@ -1148,6 +1160,7 @@
     let mostrarMasCategorias = false;
     let flotaChartMode = 'total';
     let tableroModoKm = false;
+    let desviosModoKm = false;
     
     // Colores
     const COLORS = {
@@ -1388,6 +1401,13 @@
       document.getElementById('tablero-btn-monto').classList.toggle('active', mode === 'monto');
       document.getElementById('tablero-btn-kms').classList.toggle('active', mode === 'kms');
       render();
+    }
+    
+    function setDesviosMode(mode) {
+      desviosModoKm = mode === 'kms';
+      document.getElementById('desvios-btn-monto').classList.toggle('active', mode === 'monto');
+      document.getElementById('desvios-btn-kms').classList.toggle('active', mode === 'kms');
+      renderDesvios();
     }
     
     function setRango(n) {
@@ -1666,24 +1686,54 @@
     function renderDesvios() {
       const periodo = document.getElementById('desvios-periodo').value || currentPeriodo;
       const busqueda = document.getElementById('desvios-busqueda')?.value.toLowerCase().trim() || '';
-      const data = rawData.filter(r => r.periodo === periodo);
+      let data = rawData.filter(r => r.periodo === periodo);
+      
+      // Filtrar usuarios con KMs si estamos en modo $/KM
+      if (desviosModoKm) {
+        const kmsByUser = getKmsByUserForPeriodo(periodo);
+        data = data.filter(r => (kmsByUser[r.usuario] || 0) > 0);
+      }
       
       const usuarios = [...new Set(data.map(r => r.usuario))];
-      const totalGlobal = data.reduce((acc, r) => acc + r.importe, 0);
-      const promedio = usuarios.length > 0 ? totalGlobal / usuarios.length : 0;
+      if (usuarios.length === 0) {
+        document.getElementById('desvios-list').innerHTML = '<div class="empty-state"><p>No hay usuarios en este período</p></div>';
+        return;
+      }
       
-      const porUsuario = {};
-      data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
+      // Calcular promedio
+      let promedio;
+      let porUsuario = {};
+      
+      if (desviosModoKm) {
+        // Modo $/KM: promedio = suma gastos / suma kms
+        const kmsByUser = getKmsByUserForPeriodo(periodo);
+        const totalGasto = data.reduce((acc, r) => acc + r.importe, 0);
+        const totalKms = usuarios.reduce((acc, u) => acc + (kmsByUser[u] || 0), 0);
+        promedio = totalKms > 0 ? totalGasto / totalKms : 0;
+        
+        // Calcular valor $/KM por usuario
+        usuarios.forEach(usuario => {
+          const gasto = data.filter(r => r.usuario === usuario).reduce((a, r) => a + r.importe, 0);
+          const kms = kmsByUser[usuario] || 0;
+          porUsuario[usuario] = kms > 0 ? gasto / kms : 0;
+        });
+      } else {
+        // Modo montos: promedio = suma gastos / cantidad usuarios
+        const totalGlobal = data.reduce((acc, r) => acc + r.importe, 0);
+        promedio = usuarios.length > 0 ? totalGlobal / usuarios.length : 0;
+        
+        data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
+      }
       
       let desvios = Object.entries(porUsuario)
-        .map(([usuario, gasto]) => ({
+        .map(([usuario, valor]) => ({
           usuario,
-          gasto,
+          valor,
           promedio,
-          desvio: gasto - promedio,
-          desvioPct: promedio > 0 ? ((gasto - promedio) / promedio) * 100 : 0
+          desvio: valor - promedio,
+          desvioPct: promedio > 0 ? ((valor - promedio) / promedio) * 100 : 0
         }))
-        .sort((a, b) => b.gasto - a.gasto);
+        .sort((a, b) => b.desvioPct - a.desvioPct); // Ordenar por % de desvío
       
       // Aplicar filtro de búsqueda
       if (busqueda) {
@@ -1698,6 +1748,7 @@
       document.getElementById('desvios-list').innerHTML = desvios.map((d, i) => {
         const desvioClass = d.desvioPct > 50 ? 'danger' : (d.desvioPct > 0 ? 'warning' : '');
         const desvioPrefix = d.desvio >= 0 ? '+' : '';
+        const formatFn = desviosModoKm ? formatRate : formatCurrency;
         return `
         <div class="desvio-card" onclick="toggleDesvioDetail(this, '${d.usuario}', '${periodo}')">
           <div class="desvio-card-header">
@@ -1706,12 +1757,12 @@
               <span class="desvio-name">${d.usuario}</span>
               <div class="desvio-stats">
                 <div class="desvio-stat">
-                  <span class="label">Gasto</span>
-                  <span class="value">${formatCurrency(d.gasto)}</span>
+                  <span class="label">${desviosModoKm ? '$/KM' : 'Gasto'}</span>
+                  <span class="value">${formatFn(d.valor)}</span>
                 </div>
                 <div class="desvio-stat">
-                  <span class="label">Promedio</span>
-                  <span class="value muted">${formatCurrency(d.promedio)}</span>
+                  <span class="label">${desviosModoKm ? 'Prom $/KM' : 'Promedio'}</span>
+                  <span class="value muted">${formatFn(d.promedio)}</span>
                 </div>
                 <div class="desvio-stat">
                   <span class="label">Desvío</span>
@@ -1741,9 +1792,12 @@
       
       card.classList.add('expanded');
       
-      // Calculate detail per category - INCLUIR TODAS LAS CATEGORÍAS
+      // Calculate detail per category
       const prevPeriodo = getPreviousPeriodo(periodo);
       const allCategorias = [...new Set(rawData.map(r => r.categoria))];
+      const kmsByUser = getKmsByUserForPeriodo(periodo);
+      const kmsPrev = prevPeriodo ? getKmsByUserForPeriodo(prevPeriodo) : {};
+      const usuarioKms = kmsByUser[usuario] || 0;
       
       const detailByCategory = allCategorias.map(cat => {
         // Gasto actual del usuario en esta categoría
@@ -1756,23 +1810,43 @@
           .filter(r => r.periodo === prevPeriodo && r.usuario === usuario && r.categoria === cat)
           .reduce((acc, r) => acc + r.importe, 0) : 0;
         
-        // Promedio de TODOS los usuarios en esta categoría este mes (incluyendo los que no gastaron)
-        const gastosPorUsuarioEnCat = {};
-        const dataCat = rawData.filter(r => r.periodo === periodo && r.categoria === cat);
-        dataCat.forEach(r => { gastosPorUsuarioEnCat[r.usuario] = (gastosPorUsuarioEnCat[r.usuario] || 0) + r.importe; });
+        // Promedio por categoría
+        let promedioResto, gastoActualDisplay, gastoAnteriorDisplay;
         
-        const totalUsuariosEseMes = [...new Set(rawData.filter(r => r.periodo === periodo).map(r => r.usuario))].length;
-        const sumaCat = Object.values(gastosPorUsuarioEnCat).reduce((a, b) => a + b, 0);
-        const promedioResto = totalUsuariosEseMes > 0 ? sumaCat / totalUsuariosEseMes : 0;
+        if (desviosModoKm) {
+          // Modo $/KM: calcular promedio $/KM de usuarios con KMs
+          const dataCat = rawData.filter(r => r.periodo === periodo && r.categoria === cat);
+          let totalGastoCat = 0, totalKmsCat = 0;
+          dataCat.forEach(r => {
+            const kms = kmsByUser[r.usuario] || 0;
+            if (kms > 0) {
+              totalGastoCat += r.importe;
+              totalKmsCat += kms;
+            }
+          });
+          promedioResto = totalKmsCat > 0 ? totalGastoCat / totalKmsCat : 0;
+          gastoActualDisplay = usuarioKms > 0 ? gastoActual / usuarioKms : 0;
+          gastoAnteriorDisplay = kmsPrev[usuario] > 0 ? gastoAnterior / kmsPrev[usuario] : 0;
+        } else {
+          // Modo montos: promedio de TODOS los usuarios
+          const gastosPorUsuarioEnCat = {};
+          const dataCat = rawData.filter(r => r.periodo === periodo && r.categoria === cat);
+          dataCat.forEach(r => { gastosPorUsuarioEnCat[r.usuario] = (gastosPorUsuarioEnCat[r.usuario] || 0) + r.importe; });
+          const totalUsuariosEseMes = [...new Set(rawData.filter(r => r.periodo === periodo).map(r => r.usuario))].length;
+          const sumaCat = Object.values(gastosPorUsuarioEnCat).reduce((a, b) => a + b, 0);
+          promedioResto = totalUsuariosEseMes > 0 ? sumaCat / totalUsuariosEseMes : 0;
+          gastoActualDisplay = gastoActual;
+          gastoAnteriorDisplay = gastoAnterior;
+        }
         
-        const deltaMonto = gastoActual - gastoAnterior;
-        const deltaPct = gastoAnterior > 0 ? (deltaMonto / gastoAnterior) * 100 : null;
-        const deltaRestoMonto = gastoActual - promedioResto;
-        const deltaRestoPct = promedioResto > 0 ? ((gastoActual - promedioResto) / promedioResto) * 100 : null;
+        const deltaMonto = gastoActualDisplay - gastoAnteriorDisplay;
+        const deltaPct = gastoAnteriorDisplay > 0 ? (deltaMonto / gastoAnteriorDisplay) * 100 : null;
+        const deltaRestoMonto = gastoActualDisplay - promedioResto;
+        const deltaRestoPct = promedioResto > 0 ? ((gastoActualDisplay - promedioResto) / promedioResto) * 100 : null;
         
         return {
           categoria: cat,
-          monto: gastoActual,
+          monto: gastoActualDisplay,
           deltaMonto,
           deltaPct,
           deltaRestoMonto,
@@ -1780,8 +1854,7 @@
         };
       }).sort((a, b) => b.monto - a.monto);
       
-      
-      const fmt = (val) => formatCurrency(val);
+      const fmt = desviosModoKm ? formatRate : formatCurrency;
       const fmtPct = (pct) => {
         if (pct === null) return '—';
         const sign = pct >= 0 ? '+' : '';
@@ -1797,7 +1870,7 @@
           <thead>
             <tr>
               <th>Categoría</th>
-              <th>Monto</th>
+              <th>${desviosModoKm ? '$/KM' : 'Monto'}</th>
               <th>Δ vs mes ant</th>
               <th>Δ vs mes ant %</th>
               <th>Δ resto AC</th>
@@ -1818,7 +1891,6 @@
           </tbody>
         </table>
       `;
-      
       
       card.querySelector('.desvio-detail-content').innerHTML = tableHtml;
     }
