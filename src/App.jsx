@@ -2,8 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import './styles/index.css'
 
 const LOCAL_DATA_URL = '/gastos_reales.csv';
-const KMS_DATA_URL = '/base_historica.csv';
-const TAB_FLOTA_HIDDEN = false; // Flag to enable/disable the new tab if needed
+const KMS_DATA_URL = '/kms_mensuales.csv';
 
 const CATEGORY_COLORS = {
     'Combustible': '#3b82f6',
@@ -132,38 +131,6 @@ function parseImporte(str) {
     return isNaN(num) ? 0 : num;
 }
 
-// Parsea números que pueden tener separadores de miles y decimales
-function parseNumber(str) {
-    if (str === undefined || str === null) return 0;
-    let clean = String(str).replace(/"/g, '').trim();
-    if (!clean) return 0;
-
-    if (clean.includes(',') && clean.includes('.')) {
-        if (clean.lastIndexOf(',') > clean.lastIndexOf('.')) {
-            clean = clean.replace(/\./g, '').replace(',', '.');
-        } else {
-            clean = clean.replace(/,/g, '');
-        }
-    } else if (clean.includes(',') && !clean.includes('.')) {
-        const parts = clean.split(',');
-        if (parts.length === 2 && parts[1].length === 3) {
-            clean = clean.replace(/,/g, '');
-        } else if (parts.length === 2) {
-            clean = clean.replace(',', '.');
-        } else {
-            clean = clean.replace(/,/g, '');
-        }
-    } else if (clean.includes('.') && !clean.includes(',')) {
-        const parts = clean.split('.');
-        if (parts.length > 1 && parts[parts.length - 1].length === 3) {
-            clean = clean.replace(/\./g, '');
-        }
-    }
-
-    const num = parseFloat(clean.replace(/[^0-9\.\-]/g, ''));
-    return isNaN(num) ? 0 : num;
-}
-
 // Extraer periodo YYYYMM de una fecha
 function extractPeriodo(fechaStr) {
     if (!fechaStr) return '';
@@ -197,22 +164,6 @@ function extractPeriodo(fechaStr) {
     }
 
     return '';
-}
-
-// Normalizar texto para matching (quita tildes, deja minúsculas y colapsa espacios)
-function normalizeStr(s) {
-    if (!s && s !== '') return '';
-    try {
-        return String(s)
-            .trim()
-            .normalize('NFD')
-            .replace(/\p{Diacritic}/gu, '')
-            .replace(/\s+/g, ' ')
-            .toLowerCase();
-    } catch (e) {
-        // Fallback para entornos que no soporten \p{Diacritic}
-        return String(s).trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').toLowerCase();
-    }
 }
 
 const formatCompact = (num) => {
@@ -261,8 +212,6 @@ function App() {
     const [expandedAlertId, setExpandedAlertId] = useState(null); // ID del usuario expandido en alertas
     const [modoFecha, setModoFecha] = useState('mes'); // 'mes' o 'anio'
     const [categoriaFiltrada, setCategoriaFiltrada] = useState(''); // [NEW] Filtro global por categoría
-    const [filtroTipoVehiculo, setFiltroTipoVehiculo] = useState(''); // '' | 'propio' | 'dcac'
-    const [mostrarSoloConCombustible, setMostrarSoloConCombustible] = useState(false);
 
     // Filtros de auditoría
     const [filtroFechaDesde, setFiltroFechaDesde] = useState('')
@@ -305,7 +254,6 @@ function App() {
 
                     const fechaStr = cols[1] || '';
                     const usuario = (cols[3] || '').trim();
-                    const usuarioNorm = normalizeStr(usuario);
                     const comercio = (cols[4] || '').trim();
                     const importeStr = cols[5] || '';
                     const categoria = (cols[53] || 'Otros').trim(); // Columna BB (BB = index 53)
@@ -320,7 +268,6 @@ function App() {
                         id: index,
                         fecha: fechaStr,
                         usuario: usuario || 'Sin Usuario',
-                        usuarioNorm,
                         comercio: comercio,
                         importe: importe,
                         metodo: metodo,
@@ -348,38 +295,19 @@ function App() {
                         const lines = csv.split(/\r?\n/).slice(1).filter(l => l.trim());
                         const parsedKms = lines.map(line => {
                             const cols = parseCSVLine(line);
-                            // 0: AÑO, 1: MES, 2: MAIL, 3: COMERCIAL, 4: PATENTE, 5: TIPO, 6: KMS_EMPRESA, 7: KMS_TOTAL, 10: VEHICULO, 11: AMORTIZACION, 12: USUARIO_NORMALIZADO
+                            // A: AÑO, B: MES, C: MAIL, D: COMERCIAL, E: PATENTE, F: TIPO, G: KMS_EMPRESA
                             const anio = cols[0];
-                            const mesNum = cols[1];
-                            const mail = (cols[2] || '').trim();
-                            const comercial = cols[3];
+                            const mes = cols[1];
+                            const mail = cols[2];
                             const patente = cols[4];
                             const tipo = cols[5];
-                            const kmsEmpresa = parseNumber(cols[6]) || 0;
-                            const kmsTotales = parseNumber(cols[7]) || 0;
-                            const vehiculoInfo = cols[10] || '-';
-                            const amortizacion = parseNumber(cols[11]) || 0;
-                            const usuarioNormalizado = (cols[12] || comercial || mail || '').trim();
-                            const usuarioNormalizadoNorm = normalizeStr(usuarioNormalizado);
+                            const kms = parseImporte(cols[6]);
 
-                            // Normalizar periodo a YYYYMM
-                            const periodo = anio && mesNum ? `${anio}${mesNum.padStart(2, '0')}` : '';
+                            // Generar periodo YYYYMM
+                            const periodo = `${anio}${mes.padStart(2, '0')}`;
 
-                            return {
-                                mail,
-                                periodo,
-                                comercial,
-                                patente,
-                                tipo,
-                                kmsEmpresa,
-                                kmsTotales,
-                                vehiculoInfo,
-                                amortizacion,
-                                usuarioNormalizado,
-                                usuarioNormalizadoNorm
-                            };
+                            return { mail, periodo, patente, tipo, kms };
                         });
-                        console.log('KMs cargados:', parsedKms.length);
                         setKmsData(parsedKms);
                     })
                     .catch(e => console.error('Error loading KMs', e));
@@ -437,47 +365,6 @@ function App() {
 
     // Total del mes
     const totalMes = dataDelMes.reduce((acc, r) => acc + r.importe, 0);
-
-    // Kms del mes (usando kmsEmpresa de base_historica)
-    const totalKmsMes = useMemo(() => {
-        let kmsDelPeriodo = kmsData.filter(k => k.periodo === mesSeleccionado);
-        if (personaSeleccionada) {
-            // Usar matching por clave normalizada comparando con personaSeleccionada
-            const personaKey = normalizeStr(personaSeleccionada || '');
-            const userKms = kmsDelPeriodo.filter(k => {
-                const kMail = normalizeStr(k.mail || '');
-                const kComercial = normalizeStr(k.comercial || '');
-                const kUserNorm = k.usuarioNormalizadoNorm || normalizeStr(k.usuarioNormalizado || '');
-                return kUserNorm === personaKey || kComercial === personaKey || kMail === personaKey;
-            });
-            return userKms.reduce((acc, k) => acc + k.kmsEmpresa, 0);
-        }
-        return kmsDelPeriodo.reduce((acc, k) => acc + k.kmsEmpresa, 0);
-    }, [kmsData, mesSeleccionado, personaSeleccionada]);
-
-    const costoPorKm = totalKmsMes > 0 ? totalMes / totalKmsMes : 0;
-
-    // Mapa de gasto de combustible por usuario (clave normalizada)
-    const gastosCombustibleMap = useMemo(() => {
-        return rawData.filter(r => r.categoria === 'Combustible').reduce((acc, r) => {
-            const key = r.usuarioNorm || normalizeStr(r.usuario || '');
-            acc[key] = (acc[key] || 0) + r.importe;
-            return acc;
-        }, {});
-    }, [rawData]);
-
-    // KMs filtrados según los filtros de flota (tipo de vehículo y solo con combustible)
-    const kmsFiltrados = useMemo(() => {
-        return kmsData.filter(k => {
-            if (k.periodo !== mesSeleccionado) return false;
-            if (filtroTipoVehiculo && k.tipo !== filtroTipoVehiculo) return false;
-            if (mostrarSoloConCombustible) {
-                const key = k.usuarioNormalizadoNorm || normalizeStr((k.usuarioNormalizado || k.comercial || k.mail) || '');
-                return (gastosCombustibleMap[key] || 0) > 0;
-            }
-            return true;
-        });
-    }, [kmsData, mesSeleccionado, filtroTipoVehiculo, mostrarSoloConCombustible, gastosCombustibleMap]);
 
     // Composición por categoría
     const composicion = useMemo(() => {
@@ -588,52 +475,57 @@ function App() {
     const eficienciaCombustible = useMemo(() => {
         if (!mesSeleccionado || rawData.length === 0) return [];
 
-        // 1. Calcular Gasto de Combustible por Usuario este mes (clave normalizada)
+        // 1. Calcular Gasto de Combustible por Usuario este mes
         const gastosCombustible = {};
-        const displayNameMap = {}; // map keyNorm -> display name (cuando exista)
-
         rawData
             .filter(r => r.periodo === mesSeleccionado && r.categoria === 'Combustible')
             .forEach(r => {
-                const key = r.usuarioNorm || normalizeStr(r.usuario || '');
-                gastosCombustible[key] = (gastosCombustible[key] || 0) + r.importe;
-                if (!displayNameMap[key]) displayNameMap[key] = r.usuario;
+                gastosCombustible[r.usuario] = (gastosCombustible[r.usuario] || 0) + r.importe;
             });
 
-        // 2. Obtener Kms por Usuario este mes (del CSV nuevo) usando clave normalizada
+        // 2. Obtener Kms por Usuario este mes (del CSV nuevo)
+        // Nota: Asumimos que el 'mail' en KMs coincide con 'usuario' en Gastos.
+        // Si no coinciden exacto, habría que normalizar. Asumimos coincidencia por ahora.
         const kmsPorUsuario = {};
-        const detallesAuto = {};
+        const detallesAuto = {}; // Para guardar patente/tipo
 
         kmsData
             .filter(k => k.periodo === mesSeleccionado)
             .forEach(k => {
-                const rawKey = k.usuarioNormalizado || k.comercial || k.mail || '';
-                const key = k.usuarioNormalizadoNorm || normalizeStr(rawKey);
-                kmsPorUsuario[key] = (kmsPorUsuario[key] || 0) + k.kmsEmpresa;
-                if (!detallesAuto[key]) {
-                    detallesAuto[key] = { patente: k.patente, tipo: k.tipo, vehiculo: k.vehiculoInfo };
+                // El CSV de gastos usa emails como ID de usuario? 
+                // Revisando parseCSVLine: const usuario = cols[8] || cols[3] ...
+                // cols[3] es 'usuario' (nombre?). El CSV de KMs tiene 'MAIL' en col C (index 2) y 'COMERCIAL' en Col D (index 3).
+                // Vamos a intentar hacer match con el email. Debemos ver si rawData tiene el email guardado.
+                // En rawData actual el 'usuario' es el nombre/email. 
+                // Vamos a asumir match directo por ahora, o intentar normalizar.
+                // Al ver codigo de parseCSVLine: usuario = cols[8] (mail?) o cols[3] (nombre).
+                // El CSV de KMs tiene Mail.
+                kmsPorUsuario[k.mail] = (kmsPorUsuario[k.mail] || 0) + k.kms;
+                if (!detallesAuto[k.mail]) {
+                    detallesAuto[k.mail] = { patente: k.patente, tipo: k.tipo };
                 }
             });
 
-        // 3. Cruzar datos usando claves normalizadas
-        const todosLosId = new Set([...Object.keys(gastosCombustible), ...Object.keys(kmsPorUsuario)]);
+        // 3. Cruzar datos
+        // Iteramos los que tienen gasto O kms
+        const todosLosUsers = new Set([...Object.keys(gastosCombustible), ...Object.keys(kmsPorUsuario)]);
 
-        return Array.from(todosLosId)
-            .map(key => {
-                const gasto = gastosCombustible[key] || 0;
-                const kms = kmsPorUsuario[key] || 0;
-                const detalle = detallesAuto[key] || { patente: '-', tipo: '-', vehiculo: '-' };
-                const display = displayNameMap[key] || key;
+        return Array.from(todosLosUsers)
+            .map(u => {
+                const gasto = gastosCombustible[u] || 0;
+                // El join es complicado si 'u' es Nombre y en KMs es Mail.
+                // Hack rápido: el 'u' de gastos suele ser el email en este dataset (según recuerdo).
+                // Si no, necesitaremos un mapa de Email -> Nombre.
+                const kms = kmsPorUsuario[u] || 0;
+                const detalle = detallesAuto[u] || { patente: '-', tipo: '-' };
 
                 return {
-                    usuario: display,
-                    usuarioKey: key,
+                    usuario: u,
                     gasto,
                     kms,
                     eficiencia: kms > 0 ? gasto / kms : 0,
                     patente: detalle.patente,
-                    tipo: detalle.tipo,
-                    vehiculo: detalle.vehiculo
+                    tipo: detalle.tipo
                 };
             })
             .filter(d => d.gasto > 0 || d.kms > 0)
@@ -731,12 +623,6 @@ function App() {
                         onClick={() => setActiveTab('auditoria')}
                     >
                         <Icons.Audit /> Auditoría
-                    </button>
-                    <button
-                        className={`nav-tab ${activeTab === 'flota' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('flota')}
-                    >
-                        <Icons.Car /> Flota
                     </button>
                 </nav>
             </header>
@@ -870,24 +756,6 @@ function App() {
                                     <div className="indicator-info">
                                         <span className="indicator-label">Usuarios</span>
                                         <span className="indicator-value">{rankingUsuarios.length}</span>
-                                    </div>
-                                </div>
-                                <div className="indicator-card">
-                                    <div className="indicator-icon-wrapper purple">
-                                        <Icons.Fuel />
-                                    </div>
-                                    <div className="indicator-info">
-                                        <span className="indicator-label">KMs Empresa</span>
-                                        <span className="indicator-value">{totalKmsMes.toLocaleString('es-AR')} km</span>
-                                    </div>
-                                </div>
-                                <div className="indicator-card">
-                                    <div className="indicator-icon-wrapper red">
-                                        <Icons.Money />
-                                    </div>
-                                    <div className="indicator-info">
-                                        <span className="indicator-label">Costo / Km</span>
-                                        <span className="indicator-value">{formatCurrency(costoPorKm)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1284,112 +1152,9 @@ function App() {
                         </div>
                     )
                 }
+            </main >
+        </div >
+    )
+}
 
-                {activeTab === 'flota' && (
-                    <div className="flota-container">
-                        <div className="flota-header">
-                            <div>
-                                <h2>Análisis de Flota</h2>
-                                <p className="subtitle">Kilometraje y eficiencia de vehículos por período</p>
-                            </div>
-                            <div className="flota-filters">
-                                <select value={mesSeleccionado} onChange={e => setMesSeleccionado(e.target.value)}>
-                                    {periodosDisponibles.map(p => (
-                                        <option key={p} value={p}>{formatPeriodo(p)}</option>
-                                    ))}
-                                </select>
-
-                                <select value={filtroTipoVehiculo} onChange={e => setFiltroTipoVehiculo(e.target.value)} style={{marginLeft: '8px'}}>
-                                    <option value="">Todos</option>
-                                    <option value="propio">Propio</option>
-                                    <option value="dcac">DCAC</option>
-                                </select>
-
-                                <label style={{marginLeft: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px'}}>
-                                    <input type="checkbox" checked={mostrarSoloConCombustible} onChange={e => setMostrarSoloConCombustible(e.target.checked)} />
-                                    <span>Solo con combustible</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className="flota-grid">
-                            <div className="flota-table-card">
-                                <h3>Uso de Vehículos ({formatPeriodo(mesSeleccionado)})</h3>
-                                <div className="table-responsive">
-                                    <table className="flota-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Comercial</th>
-                                                <th>Patente</th>
-                                                <th>Vehículo</th>
-                                                <th className="text-right">KMs Empresa</th>
-                                                <th className="text-right">KMs Totales</th>
-                                                <th className="text-right">Amortización</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {kmsFiltrados.sort((a, b) => b.kmsEmpresa - a.kmsEmpresa).map((k, i) => (
-                                                <tr key={i}>
-                                                    <td>
-                                                        <div className="user-cell">
-                                                            <div className="user-avatar-mini">{k.comercial?.[0]}</div>
-                                                            <span>{k.comercial || k.mail}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td><span className="patente-tag">{k.patente}</span></td>
-                                                    <td>{k.vehiculoInfo}</td>
-                                                    <td className="text-right">{k.kmsEmpresa.toLocaleString('es-AR')}</td>
-                                                    <td className="text-right">{k.kmsTotales.toLocaleString('es-AR')}</td>
-                                                    <td className="text-right">{formatCurrency(k.amortizacion)}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div className="flota-stats">
-                                <div className="indicator-card">
-                                    <div className="indicator-icon-wrapper blue">
-                                        <Icons.Fuel />
-                                    </div>
-                                    <div className="indicator-info">
-                                        <span className="indicator-label">Total KMs Empresa</span>
-                                        <span className="indicator-value">{totalKmsMes.toLocaleString('es-AR')} km</span>
-                                    </div>
-                                </div>
-
-                                <div className="indicator-card">
-                                    <div className="indicator-icon-wrapper green">
-                                        <Icons.Money />
-                                    </div>
-                                    <div className="indicator-info">
-                                        <span className="indicator-label">Amortización Total</span>
-                                        <span className="indicator-value">
-                                            {formatCurrency(kmsData.filter(k => k.periodo === mesSeleccionado).reduce((acc, k) => acc + k.amortizacion, 0))}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="efficiency-rankings">
-                                    <h3>Ranking de Eficiencia (Costo/Km)</h3>
-                                    <div className="ranking-list">
-                                        {eficienciaCombustible.filter(d => d.kms > 0).sort((a, b) => b.eficiencia - a.eficiencia).map((d, i) => (
-                                            <div key={d.usuarioKey || d.usuario} className="ranking-item">
-                                                <div className="rank-pos">{i + 1}</div>
-                                                <div className="rank-name">{d.usuario}</div>
-                                                <div className="rank-value">{formatCurrency(d.eficiencia)}/km</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </main>
-        </div>
-    );
-};
-
-export default App;
+export default App
