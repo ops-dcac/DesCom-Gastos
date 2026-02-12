@@ -1618,41 +1618,20 @@
         
         const porUsuario = {};
         data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
-        const kmsPrev = getKmsByUserForPeriodo(prevPeriodo);
-        const prevRanking = {};
-        if (prevPeriodo) {
-          let prevData = rawData.filter(r => r.periodo === prevPeriodo);
-          if (currentPersona) prevData = prevData.filter(r => r.usuario === currentPersona);
-          if (currentCategoria) prevData = prevData.filter(r => r.categoria === currentCategoria);
-          if (tableroModoKm) prevData = prevData.filter(r => (kmsPrev[r.usuario] || 0) > 0);
-          prevData.forEach(r => { prevRanking[r.usuario] = (prevRanking[r.usuario] || 0) + r.importe; });
-        }
         const ranking = Object.entries(porUsuario)
           .map(([nombre, total]) => {
             const kms = kmsMap[nombre] || 0;
             const value = tableroModoKm && kms > 0 ? total / kms : total;
-            const prevTotal = prevRanking[nombre] || 0;
-            const prevKms = kmsPrev[nombre] || 0;
-            const prevValue = tableroModoKm && prevKms > 0 ? prevTotal / prevKms : prevTotal;
-            const deltaPct = prevValue > 0 ? ((value - prevValue) / prevValue) * 100 : null;
-            return [nombre, value, deltaPct];
+            return [nombre, value];
           })
           .sort((a, b) => b[1] - a[1]);
         
-        listEl.innerHTML = ranking.map(([nombre, total, deltaPct], i) => {
-          const deltaSign = deltaPct && deltaPct >= 0 ? '+' : '';
-          const deltaColor = deltaPct === null ? '' : (deltaPct >= 0 ? 'color: var(--red);' : 'color: var(--green);');
-          const deltaHtml = deltaPct === null ? '' : `<span style="font-size: 0.75rem; font-weight: 600; ${deltaColor}">${deltaSign}${deltaPct.toFixed(0)}%</span>`;
+        listEl.innerHTML = ranking.map(([nombre, total], i) => {
           return `
           <div class="ranking-item clickable" onclick="selectPersona('${nombre}')">
             <div class="ranking-pos">${i + 1}</div>
-            <div class="ranking-info">
-              <span class="ranking-name">${nombre}</span>
-            </div>
-            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
-              <span class="ranking-amount">${formatTableroValue(total)}</span>
-              ${deltaHtml}
-            </div>
+            <span class="ranking-name">${nombre}</span>
+            <span class="ranking-amount">${formatTableroValue(total)}</span>
           </div>
         `;
         }).join('');
