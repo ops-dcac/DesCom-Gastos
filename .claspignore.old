@@ -1,0 +1,23 @@
+# Ignore local build/app files not meant for Apps Script
+node_modules/
+node_modules/**
+**/node_modules/**
+.vite/
+.vite/**
+**/.vite/**
+src/
+src/**
+**/src/**
+public/
+vercel/
+.vscode/
+.git/
+package.json
+package-lock.json
+vite.config.js
+README.md
+DEPLOYMENT.md
+actualizar.ps1
+.env.local
+descargar-datos.js
+descargar-datos.cjs

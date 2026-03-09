@@ -1,0 +1,8 @@
+Cambios a aplicar:
+
+1. Línea 233 - Agregar fuente al array auxLeads:
+      String(row[26]||""),               // 12 cuit         (col AA)
+      String(row[37]||"")                // 13 fuente       (col AL)
+
+2. Línea 475 - Incluir fuente en ssgAll.push:
+      ssgAll.push({ kt:row[4], kv:row[5], soc:row[6], fa:row[1], sg:row[10], ug:row[11], w:row[8], fuente:row[13] });

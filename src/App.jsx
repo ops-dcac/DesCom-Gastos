@@ -768,7 +768,7 @@ function App() {
                                     <div className="fuel-header">
                                         <div className="fuel-header-left">
                                             <div className="fuel-icon-wrapper">
-                                                <Icons.Fuel />
+                                                <Icons.Car />
                                             </div>
                                             <div>
                                                 <h3>Eficiencia de Combustible</h3>
@@ -1087,22 +1087,9 @@ function App() {
                                 </div>
                                 <div className="filter-group">
                                     <label>Persona</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Filtrar por persona..."
-                                        value={busqueda}
-                                        onChange={e => setBusqueda(e.target.value)}
-                                        list="usuarios-audit"
-                                    />
-                                    <datalist id="usuarios-audit">
-                                        {usuariosUnicos.map(u => <option key={u} value={u} />)}
-                                    </datalist>
-                                </div>
-                                <div className="filter-group">
-                                    <label>Método de Pago</label>
-                                    <select value={filtroMetodoPago} onChange={e => setFiltroMetodoPago(e.target.value)}>
-                                        <option value="">Todos</option>
-                                        {metodosPago.map(m => <option key={m} value={m}>{m}</option>)}
+                                    <select value={busqueda} onChange={e => setBusqueda(e.target.value)}>
+                                        <option value="">Todas</option>
+                                        {usuariosUnicos.map(u => <option key={u} value={u}>{u}</option>)}
                                     </select>
                                 </div>
                                 <div className="filter-group">
@@ -1112,7 +1099,36 @@ function App() {
                                         {categoriasUnicas.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>
+                                <div className="filter-group">
+                                    <label>Método de Pago</label>
+                                    <select value={filtroMetodoPago} onChange={e => setFiltroMetodoPago(e.target.value)}>
+                                        <option value="">Todos</option>
+                                        {metodosPago.map(m => <option key={m} value={m}>{m}</option>)}
+                                    </select>
+                                </div>
                             </div>
+
+                            {/* Filtros Activos */}
+                            {(busqueda || filtroCategoria) && (
+                                <div className="audit-active-filters">
+                                    {busqueda && (
+                                        <button className="filter-badge" onClick={() => setBusqueda('')}>
+                                            {busqueda}
+                                            <Icons.Close />
+                                        </button>
+                                    )}
+                                    {filtroCategoria && (
+                                        <button
+                                            className="filter-badge category"
+                                            style={{ background: CATEGORY_COLORS[filtroCategoria] || 'var(--accent-blue)' }}
+                                            onClick={() => setFiltroCategoria('')}
+                                        >
+                                            {filtroCategoria}
+                                            <Icons.Close />
+                                        </button>
+                                    )}
+                                </div>
+                            )}
 
                             <div className="audit-summary">
                                 <span>{transaccionesFiltradas.length} transacciones</span>

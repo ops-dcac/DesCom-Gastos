@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
       --bg-primary: #f8fafc;
       --bg-secondary: #ffffff;
@@ -22,7 +30,7 @@
       --red: #ef4444;
       --radius: 12px;
     }
-    
+
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg-primary);
@@ -30,7 +38,7 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
-    
+
     /* Loading */
     .loading {
       display: flex;
@@ -40,6 +48,7 @@
       height: 100vh;
       gap: 1rem;
     }
+
     .spinner {
       width: 40px;
       height: 40px;
@@ -48,8 +57,13 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     /* Header */
     .header {
       display: flex;
@@ -63,6 +77,7 @@
       z-index: 100;
       position: relative;
     }
+
     .header-center {
       position: absolute;
       left: 50%;
@@ -73,16 +88,19 @@
       height: 100%;
       pointer-events: none;
     }
+
     .header-logo {
       height: 32px;
       width: auto;
       display: block;
     }
+
     .logo {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .logo-icon {
       width: 42px;
       height: 42px;
@@ -93,6 +111,7 @@
       justify-content: center;
       color: white;
     }
+
     .logo-title {
       font-family: 'Outfit', sans-serif;
       font-size: 1.1rem;
@@ -100,16 +119,19 @@
       color: var(--blue-dark);
       letter-spacing: 0.5px;
     }
+
     .logo-subtitle {
       font-size: 0.65rem;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.5px;
     }
+
     .nav {
       display: flex;
       gap: 0.5rem;
     }
+
     .nav-btn {
       display: flex;
       align-items: center;
@@ -124,24 +146,35 @@
       border-radius: 8px;
       transition: all 0.2s;
     }
-    .nav-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .nav-btn.active { background: var(--blue-dark); color: white; }
-    
+
+    .nav-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-btn.active {
+      background: var(--blue-dark);
+      color: white;
+    }
+
     /* Main */
     .main {
       padding: 1.5rem 2.5rem;
       max-width: 1600px;
       margin: 0 auto;
     }
-    .hidden { display: none !important; }
-    
+
+    .hidden {
+      display: none !important;
+    }
+
     /* Dashboard */
     .dashboard {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
-    
+
     /* Filters */
     .filters {
       display: flex;
@@ -149,12 +182,18 @@
       align-items: flex-end;
       flex-wrap: wrap;
     }
+
     .filter-group {
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
     }
-    .filter-group.flex-1 { flex: 1; min-width: 200px; }
+
+    .filter-group.flex-1 {
+      flex: 1;
+      min-width: 200px;
+    }
+
     .filter-group label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -162,6 +201,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+
     .filter-group select,
     .filter-group input {
       padding: 0.7rem 1rem;
@@ -172,6 +212,7 @@
       color: var(--text-primary);
       min-width: 150px;
     }
+
     .toggle-km-group {
       display: flex;
       gap: 0.25rem;
@@ -180,6 +221,7 @@
       border-radius: 8px;
       border: 1px solid var(--border);
     }
+
     .toggle-km-btn {
       padding: 0.5rem 0.9rem;
       border: none;
@@ -191,17 +233,20 @@
       border-radius: 6px;
       transition: all 0.2s;
     }
+
     .toggle-km-btn.active {
       background: var(--bg-secondary);
       color: var(--accent-blue);
       box-shadow: var(--shadow-sm);
     }
+
     .filter-group select:focus,
     .filter-group input:focus {
       outline: none;
       border-color: var(--blue);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
+
     .filter-tag {
       display: flex;
       align-items: center;
@@ -216,8 +261,13 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .filter-tag:hover { background: #fee2e2; border-color: #fecaca; color: var(--red); }
-    
+
+    .filter-tag:hover {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: var(--red);
+    }
+
     /* Card */
     .card {
       background: var(--bg-secondary);
@@ -225,13 +275,16 @@
       padding: 0.85rem 1.25rem;
       border: 1px solid var(--border);
     }
+
     .card.flota-chart-card {
       padding: 0.5rem 0.75rem 0.75rem 0.75rem;
     }
+
     .card.flota-chart-card .card-header {
       margin-bottom: 0.75rem;
       padding-bottom: 0.5rem;
     }
+
     .card-header {
       display: flex;
       justify-content: space-between;
@@ -240,6 +293,7 @@
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
     }
+
     .card h3 {
       font-size: 1rem;
       font-weight: 700;
@@ -248,6 +302,7 @@
       align-items: center;
       gap: 0.5rem;
     }
+
     .badge {
       background: var(--blue-dark);
       color: white;
@@ -257,6 +312,7 @@
       font-weight: 600;
       margin-left: 0.5rem;
     }
+
     .range-buttons {
       display: flex;
       gap: 0.25rem;
@@ -264,6 +320,7 @@
       padding: 0.25rem;
       border-radius: 8px;
     }
+
     .range-buttons button {
       padding: 0.4rem 0.7rem;
       border: none;
@@ -275,8 +332,12 @@
       border-radius: 6px;
       transition: all 0.2s;
     }
-    .range-buttons button.active { background: var(--blue-dark); color: white; }
-    
+
+    .range-buttons button.active {
+      background: var(--blue-dark);
+      color: white;
+    }
+
     /* Bar Chart */
     .bar-chart {
       display: flex;
@@ -285,6 +346,7 @@
       height: 340px;
       padding-bottom: 18px;
     }
+
     .bar-column {
       flex: 1;
       display: flex;
@@ -295,6 +357,7 @@
       position: relative;
       cursor: pointer;
     }
+
     .bar-container {
       width: 100%;
       max-width: 45px;
@@ -306,8 +369,17 @@
       margin-bottom: 36px;
       background: #f1f5f9;
     }
-    .bar-column:hover .bar-container { transform: scaleY(1.02); filter: brightness(1.05); }
-    .bar-segment { width: 100%; min-height: 2px; }
+
+    .bar-column:hover .bar-container {
+      transform: scaleY(1.02);
+      filter: brightness(1.05);
+    }
+
+    .bar-segment {
+      width: 100%;
+      min-height: 2px;
+    }
+
     .bar-label {
       position: absolute;
       bottom: 20px;
@@ -315,6 +387,7 @@
       font-weight: 700;
       color: var(--text-primary);
     }
+
     .bar-value {
       position: absolute;
       bottom: 0;
@@ -323,7 +396,7 @@
       color: var(--text-muted);
       white-space: nowrap;
     }
-    
+
     /* Indicators */
     .indicators {
       display: grid;
@@ -331,6 +404,7 @@
       gap: 1rem;
       margin-bottom: 1rem;
     }
+
     .indicator {
       background: var(--bg-secondary);
       border-radius: var(--radius);
@@ -341,7 +415,12 @@
       gap: 1rem;
       transition: all 0.2s;
     }
-    .indicator:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+
+    .indicator:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
     .indicator-icon {
       width: 44px;
       height: 44px;
@@ -350,9 +429,22 @@
       align-items: center;
       justify-content: center;
     }
-    .indicator-icon.blue { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
-    .indicator-icon.green { background: rgba(16, 185, 129, 0.1); color: #059669; }
-    .indicator-icon.orange { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+
+    .indicator-icon.blue {
+      background: rgba(59, 130, 246, 0.1);
+      color: #2563eb;
+    }
+
+    .indicator-icon.green {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+
+    .indicator-icon.orange {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+    }
+
     .indicator-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -360,12 +452,14 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+
     .indicator-value {
       font-family: 'Outfit', sans-serif;
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--blue-dark);
     }
+
     .indicator-delta {
       font-size: 0.75rem;
       font-weight: 600;
@@ -379,39 +473,45 @@
       align-items: start;
       margin-bottom: 1.5rem;
     }
+
     .top-left {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
+
     .indicators.compact {
       grid-template-columns: repeat(3, 1fr);
       gap: 0.75rem;
       margin-bottom: 0;
     }
+
     .indicators.compact .indicator {
       padding: 0.7rem 0.9rem;
       gap: 0.6rem;
     }
+
     .indicators.compact .indicator-icon {
       width: 34px;
       height: 34px;
       border-radius: 8px;
     }
+
     .indicators.compact .indicator-label {
       font-size: 0.6rem;
     }
+
     .indicators.compact .indicator-value {
       font-size: 1.05rem;
     }
-    
+
     /* Two Column Layout */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
     }
-    
+
     /* Composition Bar */
     .composition-bar {
       display: flex;
@@ -421,16 +521,28 @@
       background: var(--bg-hover);
       margin-bottom: 1rem;
     }
+
     .composition-segment {
       cursor: pointer;
       transition: all 0.2s;
       min-width: 3px;
     }
-    .composition-segment:hover { filter: brightness(0.9); }
-    .composition-segment.active { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5); }
-    
+
+    .composition-segment:hover {
+      filter: brightness(0.9);
+    }
+
+    .composition-segment.active {
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+    }
+
     /* Category List */
-    .category-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
     .category-header {
       display: grid;
       grid-template-columns: 1fr auto auto auto;
@@ -443,12 +555,14 @@
       letter-spacing: 0.4px;
       border-bottom: 1px solid var(--border);
     }
+
     .category-header span:nth-child(2),
     .category-header span:nth-child(3),
     .category-header span:nth-child(4) {
       text-align: right;
       min-width: 72px;
     }
+
     .category-item {
       display: grid;
       grid-template-columns: 1fr auto auto auto;
@@ -459,15 +573,55 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .category-item:hover { background: var(--bg-hover); }
-    .category-item.active { background: var(--blue-dark); color: white; }
-    .category-item.active .category-amount { color: white; }
-    .category-info { display: flex; align-items: center; gap: 0.6rem; flex: 1; }
-    .category-dot { width: 10px; height: 10px; border-radius: 3px; }
-    .category-amount { font-weight: 700; color: var(--text-primary); text-align: right; min-width: 64px; }
-    .category-delta { font-weight: 700; text-align: right; min-width: 64px; color: var(--text-secondary); }
-    .category-delta.positive { color: var(--green); }
-    .category-delta.negative { color: var(--red); }
+
+    .category-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .category-item.active {
+      background: var(--blue-dark);
+      color: white;
+    }
+
+    .category-item.active .category-amount {
+      color: white;
+    }
+
+    .category-info {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex: 1;
+    }
+
+    .category-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .category-amount {
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: right;
+      min-width: 64px;
+    }
+
+    .category-delta {
+      font-weight: 700;
+      text-align: right;
+      min-width: 64px;
+      color: var(--text-secondary);
+    }
+
+    .category-delta.positive {
+      color: var(--green);
+    }
+
+    .category-delta.negative {
+      color: var(--red);
+    }
+
     .delta-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -478,6 +632,7 @@
       align-items: center;
       gap: 0.35rem;
     }
+
     .show-more {
       width: 100%;
       padding: 0.6rem;
@@ -490,10 +645,21 @@
       border-radius: 8px;
       margin-top: 0.5rem;
     }
-    .show-more:hover { background: var(--bg-hover); border-style: solid; }
-    
+
+    .show-more:hover {
+      background: var(--bg-hover);
+      border-style: solid;
+    }
+
     /* Ranking */
-    .ranking-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 400px; overflow-y: auto; }
+    .ranking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
     .ranking-item {
       display: flex;
       align-items: center;
@@ -503,9 +669,20 @@
       border-radius: 8px;
       transition: all 0.2s;
     }
-    .ranking-item.clickable { cursor: pointer; }
-    .ranking-item.clickable:hover { background: var(--blue-dark); color: white; }
-    .ranking-item.clickable:hover .ranking-amount { color: white; }
+
+    .ranking-item.clickable {
+      cursor: pointer;
+    }
+
+    .ranking-item.clickable:hover {
+      background: var(--blue-dark);
+      color: white;
+    }
+
+    .ranking-item.clickable:hover .ranking-amount {
+      color: white;
+    }
+
     .ranking-pos {
       width: 26px;
       height: 26px;
@@ -519,15 +696,41 @@
       color: var(--text-muted);
       flex-shrink: 0;
     }
-    .ranking-info { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .ranking-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ranking-meta { font-size: 0.7rem; color: var(--text-muted); }
-    .ranking-amount { font-weight: 700; color: var(--blue-dark); flex-shrink: 0; }
-    
+
+    .ranking-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .ranking-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ranking-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .ranking-amount {
+      font-weight: 700;
+      color: var(--blue-dark);
+      flex-shrink: 0;
+    }
+
     /* Composition Card Enhancement */
-    
+
     /* Desvíos Page */
-    .page-container { max-width: 1400px; margin: 0 auto; }
+    .page-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -536,6 +739,7 @@
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
     }
+
     .page-header h2 {
       font-size: 1.4rem;
       color: var(--blue);
@@ -544,7 +748,12 @@
       gap: 0.5rem;
       margin-bottom: 0.25rem;
     }
-    .page-header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
     .page-header select {
       padding: 0.6rem 1rem;
       border: 1px solid var(--border);
@@ -552,7 +761,13 @@
       font-size: 0.9rem;
       background: var(--bg-secondary);
     }
-    .desvios-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .desvios-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
     .desvio-card {
       display: flex;
       flex-direction: column;
@@ -565,27 +780,35 @@
       cursor: pointer;
       overflow: hidden;
     }
-    .desvio-card:hover { border-color: var(--blue); }
+
+    .desvio-card:hover {
+      border-color: var(--blue);
+    }
+
     .desvio-card-header {
       display: flex;
       align-items: center;
       gap: 1rem;
       padding: 1rem 1.25rem;
     }
+
     .desvio-card-body {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease;
       border-top: 0px solid var(--border);
     }
+
     .desvio-card.expanded .desvio-card-body {
       max-height: 1000px;
       border-top: 1px solid var(--border);
     }
+
     .desvio-detail-table {
       width: 100%;
       border-collapse: collapse;
     }
+
     .desvio-detail-table th {
       text-align: left;
       padding: 0.75rem 1rem;
@@ -596,24 +819,79 @@
       text-transform: uppercase;
       border-bottom: 1px solid var(--border);
     }
+
     .desvio-detail-table th:last-child,
-    .desvio-detail-table td:last-child { text-align: right; }
+    .desvio-detail-table td:last-child {
+      text-align: right;
+    }
+
     .desvio-detail-table td {
       padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--border);
       font-size: 0.85rem;
     }
-    .desvio-detail-table tr:last-child td { border-bottom: none; }
-    .desvio-rank { font-size: 1.1rem; font-weight: 800; color: var(--orange); min-width: 40px; }
-    .desvio-info { flex: 1; }
-    .desvio-name { font-weight: 700; font-size: 1rem; display: block; margin-bottom: 0.5rem; }
-    .desvio-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-    .desvio-stat { display: flex; flex-direction: column; }
-    .desvio-stat .label { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-    .desvio-stat .value { font-weight: 700; font-size: 0.95rem; }
-    .desvio-stat .value.muted { color: var(--text-secondary); }
-    .badge.warning { background: #fef3c7; color: #d97706; margin-left: 0; }
-    .badge.danger { background: #fee2e2; color: #dc2626; margin-left: 0; }
+
+    .desvio-detail-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .desvio-rank {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--orange);
+      min-width: 40px;
+    }
+
+    .desvio-info {
+      flex: 1;
+    }
+
+    .desvio-name {
+      font-weight: 700;
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .desvio-stats {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .desvio-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .desvio-stat .label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .desvio-stat .value {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .desvio-stat .value.muted {
+      color: var(--text-secondary);
+    }
+
+    .badge.warning {
+      background: #fef3c7;
+      color: #d97706;
+      margin-left: 0;
+    }
+
+    .badge.danger {
+      background: #fee2e2;
+      color: #dc2626;
+      margin-left: 0;
+    }
+
     .btn-small {
       padding: 0.5rem 1rem;
       border: 1px solid var(--border);
@@ -624,10 +902,25 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    .btn-small:hover { background: var(--blue-dark); color: white; border-color: var(--blue-dark); }
-    .btn-small.active { background: var(--blue-dark); color: white; border-color: var(--blue-dark); }
-    .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
-    
+
+    .btn-small:hover {
+      background: var(--blue-dark);
+      color: white;
+      border-color: var(--blue-dark);
+    }
+
+    .btn-small.active {
+      background: var(--blue-dark);
+      color: white;
+      border-color: var(--blue-dark);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+
     /* Auditoría */
     .audit-filters {
       display: flex;
@@ -639,6 +932,7 @@
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
+
     .audit-summary {
       display: flex;
       justify-content: space-between;
@@ -650,13 +944,20 @@
       color: var(--text-secondary);
       margin-bottom: 1rem;
     }
+
     .audit-table-wrapper {
       background: var(--bg-secondary);
       border-radius: var(--radius);
       border: 1px solid var(--border);
       overflow-x: auto;
     }
-    .audit-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
     .audit-table th {
       text-align: left;
       padding: 0.9rem 1rem;
@@ -667,9 +968,23 @@
       text-transform: uppercase;
       border-bottom: 1px solid var(--border);
     }
-    .audit-table td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-    .audit-table tr:hover { background: var(--bg-hover); }
-    .audit-table .text-right { text-align: right; font-weight: 700; color: var(--blue-dark); }
+
+    .audit-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .audit-table tr:hover {
+      background: var(--bg-hover);
+    }
+
+    .audit-table .text-right {
+      text-align: right;
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+
     .cat-pill {
       display: inline-block;
       padding: 0.2rem 0.5rem;
@@ -678,8 +993,14 @@
       font-weight: 600;
       color: white;
     }
-        /* Flota */
-    .flota-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    /* Flota */
+    .flota-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
     .flota-card {
       display: flex;
       flex-direction: column;
@@ -691,8 +1012,16 @@
       transition: all 0.2s;
       cursor: pointer;
     }
-    .flota-card:hover { border-color: var(--blue); background: var(--bg-hover); }
-    .flota-card.clickable { cursor: pointer; }
+
+    .flota-card:hover {
+      border-color: var(--blue);
+      background: var(--bg-hover);
+    }
+
+    .flota-card.clickable {
+      cursor: pointer;
+    }
+
     .flota-header {
       display: flex;
       justify-content: space-between;
@@ -700,6 +1029,7 @@
       border-bottom: 1px solid var(--border);
       padding-bottom: 0.75rem;
     }
+
     .flota-title {
       display: flex;
       align-items: center;
@@ -707,6 +1037,7 @@
       font-weight: 700;
       font-size: 1rem;
     }
+
     .flota-patente {
       background: var(--blue-dark);
       color: white;
@@ -716,11 +1047,13 @@
       font-weight: 700;
       font-size: 0.8rem;
     }
+
     .flota-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 0.75rem;
     }
+
     .flota-stat {
       display: flex;
       flex-direction: column;
@@ -728,6 +1061,7 @@
       background: var(--bg-hover);
       border-radius: 8px;
     }
+
     .flota-stat-label {
       font-size: 0.65rem;
       font-weight: 600;
@@ -735,23 +1069,35 @@
       text-transform: uppercase;
       margin-bottom: 0.25rem;
     }
+
     .flota-stat-value {
       font-weight: 700;
       font-size: 1rem;
       color: var(--blue-dark);
     }
+
     .flota-warning {
       color: var(--orange);
       font-weight: 800;
       margin-left: 6px;
     }
+
     .flota-stat-meta {
       font-size: 0.7rem;
       color: var(--text-secondary);
       margin-top: 0.25rem;
     }
-    .badge.propio { background: #dbeafe; color: #1e40af; }
-    .badge.dcac { background: #dcfce7; color: #166534; }
+
+    .badge.propio {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge.dcac {
+      background: #dcfce7;
+      color: #166534;
+    }
+
     .flota-layout {
       display: grid;
       grid-template-columns: 2.5fr 1fr;
@@ -759,21 +1105,25 @@
       gap: 1.5rem;
       align-items: start;
     }
+
     .flota-left {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
+
     .flota-panel {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
+
     .flota-panel-section {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
     }
+
     .flota-panel-title {
       font-size: 0.7rem;
       font-weight: 700;
@@ -781,6 +1131,7 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
+
     .flota-kpi-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
@@ -791,6 +1142,7 @@
       align-items: center;
       gap: 0.75rem;
     }
+
     .flota-kpi-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -798,55 +1150,336 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
+
     .flota-kpi-value {
       font-size: 0.95rem;
       font-weight: 800;
       color: var(--blue-dark);
     }
+
     .flota-kpi-delta {
       font-size: 0.75rem;
       font-weight: 700;
       min-width: 64px;
       text-align: right;
     }
-    .flota-kpi-delta.positive { color: var(--green); }
-    .flota-kpi-delta.negative { color: var(--red); }
+
+    .flota-kpi-delta.positive {
+      color: var(--green);
+    }
+
+    .flota-kpi-delta.negative {
+      color: var(--red);
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
-      .top-grid { grid-template-columns: 1fr; }
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .flota-layout { grid-template-columns: 1fr; }
-      .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+      .top-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flota-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
       .header-center {
         position: static;
         transform: none;
         height: auto;
         pointer-events: auto;
       }
-      .main { padding: 1rem; }
+
+      .main {
+        padding: 1rem;
+      }
     }
+
     @media (max-width: 768px) {
-      .indicators { grid-template-columns: 1fr; }
-      .filters { flex-direction: column; align-items: stretch; }
-      .filter-group { width: 100%; }
-      .bar-chart { height: 200px; }
-      .desvio-stats { flex-direction: column; gap: 0.5rem; }
-      .composition-indicators { grid-template-columns: 1fr; }
+      .indicators {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-group {
+        width: 100%;
+      }
+
+      .bar-chart {
+        height: 200px;
+        padding-bottom: 8px;
+      }
+
+      .bar-container {
+        margin-bottom: 20px;
+      }
+
+      .bar-label {
+        bottom: 12px;
+        font-size: 0.7rem;
+      }
+
+      .desvio-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .composition-indicators {
+        grid-template-columns: 1fr;
+      }
+
+      .flota-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+
+      .flota-stat {
+        padding: 0.6rem;
+      }
+
+      .flota-stat-label {
+        font-size: 0.6rem;
+        margin-bottom: 0.15rem;
+      }
+
+      .flota-stat-value {
+        font-size: 0.9rem;
+      }
+
+      #flota-chart {
+        height: 300px !important;
+      }
+
+      .flota-card {
+        padding: 0.8rem 1rem;
+      }
+
+      .nav {
+        gap: 0.25rem;
+      }
+
+      .nav-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+      }
     }
-    
+
+    /* Login Screen */
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+
+    .login-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card h2 {
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .login-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .login-form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .login-form-group input {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .login-form-group input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .login-btn {
+      padding: 0.75rem 1rem;
+      background: var(--blue-dark);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover {
+      background: #1e293b;
+      transform: translateY(-2px);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .login-error {
+      color: var(--red);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 0.75rem;
+      background: #fee2e2;
+      border-radius: 6px;
+    }
+
+    /* Header User Section */
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-selector {
+      position: relative;
+    }
+
+    .user-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .user-button:hover {
+      background: var(--bg-secondary);
+      border-color: var(--blue);
+    }
+
+    .user-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      min-width: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 0.5rem;
+    }
+
+    .user-dropdown.show {
+      display: block;
+    }
+
+    .user-dropdown-item {
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .user-dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .user-dropdown-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .user-dropdown-item.active {
+      background: var(--blue);
+      color: white;
+    }
+
+    .logout-btn {
+      padding: 0.6rem 1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #fee2e2;
+      color: var(--red);
+      border-color: var(--red);
+    }
+
     /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-hover);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
   </style>
 </head>
+
 <body>
   <!-- Loading -->
   <div id="loading" class="loading">
     <div class="spinner"></div>
     <p>Cargando datos...</p>
   </div>
-  
+
   <!-- App -->
   <div id="app" class="hidden">
     <!-- Header -->
@@ -854,7 +1487,10 @@
       <div class="logo">
         <div class="logo-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+            <path d="M3 3v18h18" />
+            <path d="M18 17V9" />
+            <path d="M13 17V5" />
+            <path d="M8 17v-3" />
           </svg>
         </div>
         <div>
@@ -862,28 +1498,46 @@
         </div>
       </div>
       <div class="header-center">
-        <img class="header-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwDbZ7-Fez-afmtvRFlMsjnRm7VU4kUe8jNQ&s" alt="deCampoaCampo">
+        <img class="header-logo"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwDbZ7-Fez-afmtvRFlMsjnRm7VU4kUe8jNQ&s"
+          alt="deCampoaCampo">
       </div>
       <nav class="nav">
         <button class="nav-btn active" data-tab="tablero" onclick="showTab('tablero')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
+          </svg>
           Tablero
         </button>
         <button class="nav-btn" data-tab="desvios" onclick="showTab('desvios')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
           Desvíos
         </button>
         <button class="nav-btn" data-tab="auditoria" onclick="showTab('auditoria')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
           Auditoría
         </button>
-                <button class="nav-btn" data-tab="flota" onclick="showTab('flota')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16.5 10 14 10s-4.7.6-6.5 1.1C6.7 11.3 6 12.1 6 13v3c0 .6.4 1 1 1h2m0-4H9m0 0h6m0 0h2M9 20h6M5 20H3c-.6 0-1 .4-1 1v2h16v-2c0-.6-.4-1-1-1h-2"/></svg>
+        <button class="nav-btn" data-tab="flota" onclick="showTab('flota')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M7 17H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-3M7 17v2m10-2v2M7 12V8c0-1 .895-2 2-2h6c1.105 0 2 .895 2 2v4M6 17h12M6 20h12" />
+            <circle cx="8.5" cy="17" r="1.5" />
+            <circle cx="15.5" cy="17" r="1.5" />
+          </svg>
           Flota
         </button>
       </nav>
+
     </header>
-    
+
     <main class="main">
       <!-- TABLERO -->
       <div id="tab-tablero" class="dashboard">
@@ -892,6 +1546,10 @@
           <div class="filter-group">
             <label>Período</label>
             <select id="periodo-select" onchange="onPeriodoChange()"></select>
+          </div>
+          <div class="filter-group">
+            <label>Región</label>
+            <select id="tablero-region-select" onchange="setTableroRegion()"></select>
           </div>
           <div class="filter-group flex-1">
             <label>Buscar Persona</label>
@@ -906,21 +1564,26 @@
           </div>
           <div id="active-filters"></div>
         </div>
-        
+
         <!-- Evolucion y Ranking -->
         <div class="top-grid">
           <div class="top-left">
             <div class="indicators compact">
               <div class="indicator">
                 <div class="indicator-icon blue">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="16" />
+                    <line x1="8" y1="12" x2="16" y2="12" />
+                  </svg>
                 </div>
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start;">
                   <div>
                     <div class="indicator-label" id="total-label">Total</div>
                     <div class="indicator-value" id="total-value">$0</div>
                   </div>
-                  <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                  <div
+                    style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
                     <div style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">Δ vs mes ant %</div>
                     <div class="indicator-delta" id="total-delta"></div>
                   </div>
@@ -928,14 +1591,18 @@
               </div>
               <div class="indicator">
                 <div class="indicator-icon green">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
                 </div>
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start;">
                   <div>
                     <div class="indicator-label">Transacciones</div>
                     <div class="indicator-value" id="trans-value">0</div>
                   </div>
-                  <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                  <div
+                    style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
                     <div style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">Δ vs mes ant %</div>
                     <div class="indicator-delta" id="trans-delta" style="color: var(--text-muted);"></div>
                   </div>
@@ -943,14 +1610,18 @@
               </div>
               <div class="indicator">
                 <div class="indicator-icon orange">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                  </svg>
                 </div>
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start;">
                   <div>
                     <div class="indicator-label">Usuarios</div>
                     <div class="indicator-value" id="users-value">0</div>
                   </div>
-                  <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                  <div
+                    style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
                     <div style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">Δ vs mes ant %</div>
                     <div class="indicator-delta" id="users-delta" style="color: var(--text-muted);"></div>
                   </div>
@@ -960,7 +1631,10 @@
             <div class="card">
               <div class="card-header">
                 <h3 id="chart-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18" />
+                    <path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
                   Evolución de Gastos
                 </h3>
                 <div class="range-buttons">
@@ -976,7 +1650,14 @@
           <div class="card">
             <div class="card-header" style="align-items: flex-start;">
               <h3 id="ranking-title" style="margin-bottom: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V18"/><path d="M14 22V18"/><path d="M18 4H6v11a6 6 0 0 0 12 0V4z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                  <path d="M4 22h16" />
+                  <path d="M10 22V18" />
+                  <path d="M14 22V18" />
+                  <path d="M18 4H6v11a6 6 0 0 0 12 0V4z" />
+                </svg>
                 Ranking de Gastos
               </h3>
               <div style="text-align: right;">
@@ -990,9 +1671,22 @@
         <!-- Composición por Categoría -->
         <div class="card">
           <div class="card-header">
-            <h3>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3v18h18" />
+                <path d="m19 9-5 5-4-4-3 3" />
+              </svg>
               Composición por Categoría
+              <div style="position: relative; display: inline-block;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="cursor: help;" id="info-categorias-icon">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <div id="info-categorias-tooltip" style="position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; min-width: 550px; max-height: 400px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                  <div id="info-categorias-content"></div>
+                </div>
+              </div>
             </h3>
             <div class="delta-label">
               Δ vs mes anterior
@@ -1007,25 +1701,56 @@
           </div>
           <div id="category-list" class="category-list"></div>
         </div>
+
+        <!-- Usuarios que no cargaron gastos -->
+        <div class="card">
+          <div class="card-header">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <line x1="23" y1="11" x2="17" y2="11"/>
+              </svg>
+              Usuarios que no cargaron gastos
+            </h3>
+            <div class="delta-label">
+              Datos de última transacción
+            </div>
+          </div>
+          <div id="usuarios-inactivos-list" class="category-list"></div>
+        </div>
       </div>
-      
+
       <!-- DESVÍOS -->
       <div id="tab-desvios" class="page-container hidden">
         <div class="page-header" style="align-items: flex-start;">
           <div>
             <h2>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
               Análisis de Desvíos
             </h2>
             <p>Comparativa de gasto individual vs. promedio del equipo</p>
           </div>
           <div style="display: flex; gap: 2rem; align-items: flex-end;">
             <div>
-              <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Período</label>
-              <select id="desvios-periodo" onchange="renderDesvios()" style="padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);"></select>
+              <label
+                style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Período</label>
+              <select id="desvios-periodo" onchange="renderDesvios()"
+                style="padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);"></select>
             </div>
             <div>
-              <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Modo</label>
+              <label
+                style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Región</label>
+              <select id="desvios-region-select" onchange="setDesviosRegion()"
+                style="padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);"></select>
+            </div>
+            <div>
+              <label
+                style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.4rem;">Modo</label>
               <div class="toggle-km-group">
                 <button class="toggle-km-btn active" id="desvios-btn-monto" onclick="setDesviosMode('monto')">$</button>
                 <button class="toggle-km-btn" id="desvios-btn-kms" onclick="setDesviosMode('kms')">$/KMS</button>
@@ -1034,11 +1759,27 @@
           </div>
         </div>
         <div style="margin-bottom: 1rem;">
-          <input type="text" id="desvios-busqueda" placeholder="Buscar usuario..." style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;" oninput="renderDesvios()">
+          <label
+            style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">Ordenar
+            por</label>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <button class="toggle-km-btn active" id="desvios-orden-desvio" onclick="setDesviosOrden('desvio')"
+              style="font-size: 0.85rem; padding: 0.5rem 0.9rem;">Desvío</button>
+            <button class="toggle-km-btn" id="desvios-orden-sueldo-importe" onclick="setDesviosOrden('sueldo-importe')"
+              style="font-size: 0.85rem; padding: 0.5rem 0.9rem;">Sueldo/Importe</button>
+            <button class="toggle-km-btn" id="desvios-orden-sueldo-gasto-importe"
+              onclick="setDesviosOrden('sueldo-gasto-importe')"
+              style="font-size: 0.85rem; padding: 0.5rem 0.9rem;">(Sueldo-Gastos)/Importe</button>
+            <button class="toggle-km-btn" id="desvios-orden-gasto-importe" onclick="setDesviosOrden('gasto-importe')"
+              style="font-size: 0.85rem; padding: 0.5rem 0.9rem;">Gastos/Importe</button>
+          </div>
+          <input type="text" id="desvios-busqueda" placeholder="Buscar usuario..."
+            style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;"
+            oninput="renderDesvios()">
         </div>
         <div id="desvios-list" class="desvios-list"></div>
       </div>
-      
+
       <!-- AUDITORÍA -->
       <div id="tab-auditoria" class="page-container hidden">
         <div class="audit-filters">
@@ -1048,12 +1789,24 @@
               <option value="">Todos</option>
             </select>
           </div>
+          <div class="filter-group">
+            <label>Región</label>
+            <select id="audit-region-select" onchange="setAuditRegion()"></select>
+          </div>
           <div class="filter-group flex-1">
             <label>Buscar Persona</label>
-            <input type="text" id="audit-busqueda" list="audit-usuarios" placeholder="Filtrar por nombre..." oninput="renderAuditoria()">
+            <input type="text" id="audit-busqueda" list="audit-usuarios" placeholder="Filtrar por nombre..."
+              oninput="setAuditPersona()">
             <datalist id="audit-usuarios"></datalist>
           </div>
+          <div class="filter-group">
+            <label>Categoría</label>
+            <select id="audit-categoria" onchange="setAuditCategoria()">
+              <option value="">Todas</option>
+            </select>
+          </div>
         </div>
+        <div id="audit-active-filters" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;"></div>
         <div id="audit-summary" class="audit-summary"></div>
         <div class="audit-table-wrapper">
           <table class="audit-table">
@@ -1070,27 +1823,50 @@
           </table>
         </div>
       </div>
-            <!-- FLOTA -->
+      <!-- FLOTA -->
       <div id="tab-flota" class="page-container hidden">
         <div class="page-header">
           <div>
             <h2>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 12 10s-6.7.6-8.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 12 10s-6.7.6-8.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2" />
+                <circle cx="7" cy="17" r="2" />
+                <path d="M9 17h6" />
+                <circle cx="17" cy="17" r="2" />
+              </svg>
               Análisis de Flota
             </h2>
             <p>Consumo de combustible vs KMs recorridos</p>
           </div>
           <select id="flota-periodo" onchange="renderFlota()"></select>
+          <select id="flota-region-select" onchange="setFlotaRegion()" style="margin-left: 1rem;"></select>
         </div>
 
         <div class="flota-layout">
           <!-- Fila 1, Columna 1: Gráfico -->
           <div class="card flota-chart-card">
-            <div class="card-header">
+            <div class="card-header" style="justify-content: space-between;">
               <h3>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 16V7m-5 9V5m-5 11v-3"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 3v18h18" />
+                  <path d="M18 16V7m-5 9V5m-5 11v-3" />
+                </svg>
                 <span id="flota-chart-title">KMs vs Total Gastos</span>
               </h3>
+              <div id="flota-chart-toggles" style="display: none; gap: 0.75rem; align-items: center;">
+                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
+                  <input type="checkbox" id="flota-show-gasto" checked onchange="toggleFlotaGasto()"
+                    style="cursor: pointer;">
+                  <span>Total Gasto</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
+                  <input type="checkbox" id="flota-show-amortizacion" checked onchange="toggleFlotaAmortizacion()"
+                    style="cursor: pointer;">
+                  <span>Amortización</span>
+                </label>
+              </div>
             </div>
             <div id="flota-chart" style="height: 520px; position: relative;"></div>
           </div>
@@ -1100,14 +1876,16 @@
             <div class="flota-panel-section">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
                 <div class="flota-panel-title" style="margin-bottom: 0;">Total de Gastos</div>
-                <button id="flota-chart-toggle" class="btn-small" type="button" onclick="toggleFlotaChartMode()">Grafico: Total</button>
+                <button id="flota-chart-toggle" class="btn-small" type="button"
+                  onclick="toggleFlotaChartMode()">Grafico: Total</button>
               </div>
               <div id="flota-kpi-total"></div>
             </div>
             <div class="flota-panel-section">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
                 <div class="flota-panel-title" style="margin-bottom: 0;">Por Categoría</div>
-                <select id="flota-categoria-selector" onchange="renderFlota()" style="padding: 0.35rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.75rem; background: var(--bg-secondary); cursor: pointer;">
+                <select id="flota-categoria-selector" onchange="renderFlota()"
+                  style="padding: 0.35rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.75rem; background: var(--bg-secondary); cursor: pointer;">
                   <!-- Options will be populated by JS -->
                 </select>
               </div>
@@ -1115,30 +1893,93 @@
             </div>
           </aside>
 
-          <!-- Fila 2, Columna 1: Detalle Usuario -->
-          <div class="card">
-            <div class="card-header">
-              <h3>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                Detalle Usuario
-              </h3>
+          <!-- Fila 2: Dos columnas -->
+          <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; grid-column: 1 / -1;">
+            <!-- Columna 1: Detalle Usuario -->
+            <div class="card">
+              <div class="card-header">
+                <h3>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>
+                  Detalle Usuario
+                </h3>
+              </div>
+              <!-- Filtros de Flota -->
+              <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: flex-end;">
+                <div class="filter-group">
+                  <label>Ordenar por</label>
+                  <div class="toggle-km-group">
+                    <button class="toggle-km-btn active" id="flota-orden-kms" onclick="setFlotaOrden('kms')">KMs</button>
+                    <button class="toggle-km-btn" id="flota-orden-monto" onclick="setFlotaOrden('monto')">Monto</button>
+                  </div>
+                </div>
+                <div class="filter-group">
+                  <label>Categoría de Gasto</label>
+                  <select id="flota-categoria-gasto" onchange="setFlotaCategoriaGasto()"
+                    style="padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);">
+                    <option value="">Total</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label>Tipo de Vehículo</label>
+                  <select id="flota-tipo-vehiculo" onchange="setFlotaTipoVehiculo()"
+                    style="padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: var(--bg-secondary);">
+                    <option value="">Todos</option>
+                    <option value="PROPIO">Propio</option>
+                    <option value="DCAC">DCAC</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                <input type="text" id="flota-busqueda" list="flota-usuarios" placeholder="Buscar por usuario o patente..."
+                  style="flex: 1; padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;"
+                  oninput="renderFlota()">
+                <button onclick="limpiarBusquedaFlota()"
+                  style="padding: 0.7rem 1rem; background: var(--bg-hover); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.9rem; color: var(--text-secondary); white-space: nowrap;"
+                  title="Ver todos los usuarios">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle;">
+                    <path
+                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                  </svg>
+                </button>
+                <datalist id="flota-usuarios"></datalist>
+              </div>
+              <div id="flota-list" class="flota-list"></div>
             </div>
-            <div style="margin-bottom: 1rem;">
-              <input type="text" id="flota-busqueda" list="flota-usuarios" placeholder="Buscar por usuario o patente..." style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;" oninput="renderFlota()">
-              <datalist id="flota-usuarios"></datalist>
-            </div>
-            <div id="flota-list" class="flota-list"></div>
-          </div>
 
-          <!-- Fila 2, Columna 2: Mayor Gasto por KM -->
-          <div class="card">
-            <div class="card-header">
-              <h3>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6m3-3h-6"/></svg>
-                Mayor Gasto por KM
-              </h3>
+            <!-- Columna 2: Amortización por KM y Mayor Gasto por KM -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <!-- Amortización por KM -->
+              <div class="card">
+                <div class="card-header">
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                    </svg>
+                    Amortización por KM
+                  </h3>
+                </div>
+                <div id="flota-amortizacion-km"></div>
+              </div>
+
+              <!-- Mayor Gasto por KM -->
+              <div class="card">
+                <div class="card-header">
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="8.5" cy="7" r="4" />
+                      <path d="M20 8v6m3-3h-6" />
+                    </svg>
+                    Mayor Gasto por KM
+                  </h3>
+                </div>
+                <div id="flota-ranking-km"></div>
+              </div>
             </div>
-            <div id="flota-ranking-km"></div>
           </div>
         </div>
       </div>
@@ -1146,22 +1987,39 @@
   </div>
 
   <script>
+
     // ============ DATOS GLOBALES ============
     let rawData = [];
     let periodos = [];
     let usuarios = [];
     let categorias = [];
     let flotaData = [];
+    let sueldosData = [];
+    let xKmsData = [];
+    let rosterData = []; // Datos de Roster (usuario → región)
+    let infoCategorias = {}; // Datos de Info Categorias {usuarios: [], oficinas: []}
+    let regiones = []; // Regiones únicas
     // Estado
     let currentPeriodo = '';
     let currentPersona = '';
     let currentCategoria = '';
+    let currentRegion = ''; // Región seleccionada (vacío = todas)
     let rangoMeses = 6;
     let mostrarMasCategorias = false;
     let flotaChartMode = 'total';
     let tableroModoKm = false;
     let desviosModoKm = false;
-    
+    let desviosOrdenarPor = 'desvio'; // 'desvio', 'sueldo-importe', 'sueldo-gasto-importe', 'gasto-importe'
+    let auditCategoriaFilter = '';
+    let auditPersonaFilter = '';
+    // Filtros de Flota
+    let flotaOrdenarPor = 'kms'; // 'kms' o 'monto'
+    let flotaCategoriaGasto = ''; // '' = Total, o nombre de categoría
+    let flotaTipoVehiculo = ''; // '' = Todos, 'PROPIO', 'DCAC'
+    let flotaUsuarioSeleccionado = null; // Usuario seleccionado
+    let flotaMostrarGasto = true; // Mostrar línea de Gasto en gráfico
+    let flotaMostrarAmortizacion = true; // Mostrar línea de Amortización en gráfico
+
     // Colores
     const COLORS = {
       'Combustible': '#3b82f6',
@@ -1175,95 +2033,280 @@
       'Monotributo/Autonomos': '#f97316',
       'Alimentos': '#84cc16',
       'Impuestos': '#ef4444',
-      'Reparaciones': '#eab308'
+      'Reparaciones': '#eab308',
+      'Balanza': '#7c3aed',
+      'Viajes': '#1e40af',
+      'Alquiler': '#c2410c'
     };
-    
+
     // ============ INICIALIZACIÓN ============
     document.addEventListener('DOMContentLoaded', loadData);
-    
+
     function loadData() {
       google.script.run
         .withSuccessHandler(onDataLoaded)
         .withFailureHandler(onError)
         .getData();
     }
-    
+
     function onDataLoaded(result) {
       if (result.error) {
         onError(result.error);
         return;
       }
-          
-    function onFlotaLoaded(result) {
-      if (result.error) {
-        console.error('Error cargando flota:', result.error);
-        return;
-      }
-      
-      flotaData = result.data || [];
-      fillFlotaSelects();
-      renderFlota();
-    }
+
       rawData = result.data || [];
-            
+
       // Cargar datos de flota
       google.script.run
         .withSuccessHandler(onFlotaLoaded)
         .withFailureHandler(onError)
         .getFlotaData();
+
+      // Cargar datos de sueldos
+      google.script.run
+        .withSuccessHandler(onSueldosLoaded)
+        .withFailureHandler(onError)
+        .getSueldosData();
+
+      // Cargar datos de precios de amortización por KM
+      google.script.run
+        .withSuccessHandler(onXKmsLoaded)
+        .withFailureHandler(onError)
+        .getXKmsData();
+
+      // Cargar datos de Roster (usuarios y regiones)
+      google.script.run
+        .withSuccessHandler(onRosterLoaded)
+        .withFailureHandler(onError)
+        .getRosterData();
+
+      // Cargar información de categorías
+      google.script.run
+        .withSuccessHandler(onInfoCategoriasLoaded)
+        .withFailureHandler(onError)
+        .getInfoCategorias();
+
       // Extraer periodos, usuarios y categorías únicos (orden inverso: más reciente primero)
       periodos = [...new Set(rawData.map(r => r.periodo))].sort().reverse();
       usuarios = [...new Set(rawData.map(r => r.usuario))].sort();
       categorias = [...new Set(rawData.map(r => r.categoria))].sort();
-      
+
       if (periodos.length > 0) {
-        // Establecer mes anterior como default (si existe)
-        currentPeriodo = periodos[1] || periodos[0];
+        // Obtener período por defecto del servidor (mes anterior al actual)
+        google.script.run
+          .withSuccessHandler(defaultPeriodo => {
+            // Si el período por defecto existe en los datos, usarlo; sino, usar el más reciente
+            currentPeriodo = periodos.includes(defaultPeriodo) ? defaultPeriodo : (periodos[0] || '');
+            
+            // Llenar selects
+            fillPeriodoSelects();
+            fillAuditDatalist();
+
+            // Mostrar app
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+
+            // Render inicial
+            render();
+          })
+          .withFailureHandler(() => {
+            // Si falla, usar mes anterior disponible o el más reciente
+            currentPeriodo = periodos[1] || periodos[0];
+            
+            fillPeriodoSelects();
+            fillAuditDatalist();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            render();
+          })
+          .getDefaultPeriodo();
       }
-      
-      // Llenar selects
-      fillPeriodoSelects();
-      fillAuditDatalist();
-      
-      // Mostrar app
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
-      
-      // Render inicial
-      render();
+
     }
-    
+
+    function onFlotaLoaded(result) {
+      if (result.error) {
+        console.error('Error cargando flota:', result.error);
+        return;
+      }
+
+      flotaData = result.data || [];
+      fillFlotaSelects();
+      renderFlota();
+    }
+
+    function onSueldosLoaded(result) {
+      if (result.error) {
+        console.error('Error cargando sueldos:', result.error);
+        return;
+      }
+
+      sueldosData = result.data || [];
+      console.log('Sueldos cargados:', sueldosData.length);
+      // Re-renderizar desvíos si ya está cargado
+      if (periodos.length > 0) {
+        renderDesvios();
+      }
+    }
+
+    function onXKmsLoaded(result) {
+      if (result.error) {
+        console.error('Error cargando xKms:', result.error);
+        return;
+      }
+
+      xKmsData = result.data || [];
+      console.log('XKms cargados:', xKmsData.length);
+      // Re-renderizar flota si ya está cargado
+      if (periodos.length > 0) {
+        renderFlota();
+      }
+    }
+
+    function onRosterLoaded(result) {
+      if (result.error) {
+        console.error('Error cargando Roster:', result.error);
+        return;
+      }
+
+      rosterData = result.data || [];
+      regiones = [...new Set(rosterData.map(r => r.region))].sort();
+      console.log('Roster cargado:', rosterData.length, 'Regiones:', regiones);
+      // Llenar selects de región
+      fillRegionSelects();
+    }
+
+    function onInfoCategoriasLoaded(result) {
+      if (result.error) {
+        console.error('Error cargando Info Categorías:', result.error);
+        return;
+      }
+
+      infoCategorias = result.data || { usuarios: [], oficinas: [] };
+      console.log('Info Categorías cargada:', infoCategorias);
+      
+      // Agregar event listeners al icono de información
+      const icon = document.getElementById('info-categorias-icon');
+      const tooltip = document.getElementById('info-categorias-tooltip');
+      
+      if (icon && tooltip) {
+        icon.addEventListener('mouseenter', () => {
+          // Rellenar tooltip con datos en 2 columnas
+          const content = document.getElementById('info-categorias-content');
+          if (infoCategorias && (infoCategorias.usuarios?.length > 0 || infoCategorias.oficinas?.length > 0)) {
+            const usuarios = infoCategorias.usuarios || [];
+            const oficinas = infoCategorias.oficinas || [];
+            
+            const columnUsuarios = `
+              <div>
+                <div style="font-weight: 600; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-primary);">Usuarios</div>
+                ${usuarios.map(item => `
+                  <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: ${getColor(item.categoria)};">${item.categoria}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">${item.descripcion}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            
+            const columnOficinas = `
+              <div style="border-left: 1px solid var(--border); padding-left: 1rem;">
+                <div style="font-weight: 600; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-primary);">Oficinas</div>
+                ${oficinas.map(item => `
+                  <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: var(--blue);">${item.nombre}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">${item.descripcion}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            
+            const html = `
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                ${columnUsuarios}
+                ${columnOficinas}
+              </div>
+            `;
+            content.innerHTML = html;
+          }
+          tooltip.style.display = 'block';
+        });
+        
+        tooltip.addEventListener('mouseenter', () => {
+          tooltip.style.display = 'block';
+        });
+        
+        tooltip.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+        
+        icon.addEventListener('mouseleave', () => {
+          // Esperar un poco antes de ocultar para que el usuario pueda pasar al tooltip
+          setTimeout(() => {
+            if (!tooltip.matches(':hover')) {
+              tooltip.style.display = 'none';
+            }
+          }, 100);
+        });
+      }
+    }
+
     function onError(error) {
       document.getElementById('loading').innerHTML = '<p style="color: red;">Error: ' + error + '</p>';
     }
-    
+
     function fillPeriodoSelects() {
       const selects = ['periodo-select', 'desvios-periodo', 'audit-periodo', 'flota-periodo'];
       selects.forEach(id => {
         const select = document.getElementById(id);
         if (!select) return;
-        
+
         const includeAll = id === 'audit-periodo';
         select.innerHTML = (includeAll ? '<option value="">Todos</option>' : '') +
           periodos.map(p => `<option value="${p}" ${p === currentPeriodo ? 'selected' : ''}>${formatPeriodo(p)}</option>`).join('');
       });
     }
-        
+
     function fillFlotaSelects() {
       const select = document.getElementById('flota-periodo');
       if (!select) return;
-      
+
       const flotaPeriodos = [...new Set(flotaData.map(f => f.periodo))].sort().reverse();
       const defaultPeriodo = flotaPeriodos[0] || '';
       select.innerHTML = flotaPeriodos
         .map(p => `<option value="${p}" ${p === defaultPeriodo ? 'selected' : ''}>${formatPeriodo(p)}</option>`)
         .join('');
+
+      // Llenar select de categoría de gasto en flota
+      const categoriaGastoSelect = document.getElementById('flota-categoria-gasto');
+      if (categoriaGastoSelect && categorias.length > 0) {
+        categoriaGastoSelect.innerHTML = '<option value="">Total</option>' +
+          categorias.map(c => `<option value="${c}">${c}</option>`).join('');
+      }
+    }
+
+    function fillRegionSelects() {
+      const selects = ['tablero-region-select', 'desvios-region-select', 'audit-region-select', 'flota-region-select'];
+      selects.forEach(id => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        select.innerHTML = '<option value="">Todas las Regiones</option>' +
+          regiones.map(r => `<option value="${r}" ${r === currentRegion ? 'selected' : ''}>${r}</option>`).join('');
+      });
     }
 
     function fillAuditDatalist() {
       const datalist = document.getElementById('audit-usuarios');
       if (!datalist) return;
       datalist.innerHTML = usuarios.map(u => `<option value="${u}"></option>`).join('');
+
+      // Llenar select de categoría en auditoría
+      const auditCatSelect = document.getElementById('audit-categoria');
+      if (auditCatSelect) {
+        auditCatSelect.innerHTML = '<option value="">Todas</option>' +
+          categorias.map(c => `<option value="${c}">${c}</option>`).join('');
+      }
     }
     // ============ FORMATEO ============
     function formatCurrency(val) {
@@ -1326,60 +2369,71 @@
       const total = Object.values(categorias).reduce((a, b) => a + b, 0);
       return { categorias, total };
     }
-    
+
     function formatPeriodo(p) {
       if (!p || p.length !== 6) return p;
       const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
       return meses[parseInt(p.slice(4), 10) - 1] + ' ' + p.slice(0, 4);
     }
-    
+
     function formatPeriodoCorto(p) {
       if (!p || p.length !== 6) return p;
       const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
       return meses[parseInt(p.slice(4), 10) - 1];
     }
-    
+
     function getColor(cat) {
       return COLORS[cat] || '#6366f1';
     }
-    
+
     // ============ FILTRADO ============
+    function getUsersByRegion(region) {
+      if (!region || !rosterData) return [];
+      return [...new Set(rosterData
+        .filter(r => r.region === region)
+        .map(r => r.usuario))];
+    }
+
     function getFilteredData(kmsByUser, periodo = null) {
       const efectivoPeriodo = periodo || currentPeriodo;
       let data = rawData.filter(r => r.periodo === efectivoPeriodo);
       if (currentPersona) data = data.filter(r => r.usuario === currentPersona);
       if (currentCategoria) data = data.filter(r => r.categoria === currentCategoria);
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        data = data.filter(r => usuariosEnRegion.includes(r.usuario));
+      }
       if (tableroModoKm) {
         const kmsMap = kmsByUser || getKmsByUserForPeriodo(currentPeriodo);
         data = data.filter(r => (kmsMap[r.usuario] || 0) > 0);
       }
       return data;
     }
-    
+
     function getPeriodosGrafico() {
       const idx = periodos.indexOf(currentPeriodo);
       if (idx === -1) return [];
       return periodos.slice(idx, idx + rangoMeses).reverse();
     }
-    
+
     function getPreviousPeriodo(p) {
       const idx = periodos.indexOf(p);
       return idx >= 0 && idx < periodos.length - 1 ? periodos[idx + 1] : null;
     }
-    
+
     // ============ EVENTOS ============
     function showTab(tab) {
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-      
+
       document.querySelectorAll('.main > div').forEach(div => div.classList.add('hidden'));
       document.getElementById('tab-' + tab).classList.remove('hidden');
-      
+
       if (tab === 'desvios') renderDesvios();
       if (tab === 'auditoria') renderAuditoria();
       if (tab === 'flota') renderFlota();
     }
-    
+
     function onPeriodoChange() {
       const newPeriodo = document.getElementById('periodo-select').value;
       currentPeriodo = newPeriodo;
@@ -1388,7 +2442,7 @@
       document.getElementById('audit-periodo').value = newPeriodo;
       render();
     }
-    
+
     function onBusquedaChange() {
       const val = document.getElementById('busqueda-input').value;
       const match = usuarios.find(u => u.toLowerCase() === val.toLowerCase());
@@ -1402,21 +2456,30 @@
       document.getElementById('tablero-btn-kms').classList.toggle('active', mode === 'kms');
       render();
     }
-    
+
     function setDesviosMode(mode) {
       desviosModoKm = mode === 'kms';
       document.getElementById('desvios-btn-monto').classList.toggle('active', mode === 'monto');
       document.getElementById('desvios-btn-kms').classList.toggle('active', mode === 'kms');
       renderDesvios();
     }
-    
+
+    function setDesviosOrden(criterio) {
+      desviosOrdenarPor = criterio;
+      // Actualizar botones activos
+      ['desvio', 'sueldo-importe', 'sueldo-gasto-importe', 'gasto-importe'].forEach(c => {
+        document.getElementById(`desvios-orden-${c}`).classList.toggle('active', c === criterio);
+      });
+      renderDesvios();
+    }
+
     function setRango(n) {
       rangoMeses = n;
       document.querySelectorAll('.range-buttons button').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.range-buttons button:nth-child(${[3,6,9,12].indexOf(n) + 1})`).classList.add('active');
+      document.querySelector(`.range-buttons button:nth-child(${[3, 6, 9, 12].indexOf(n) + 1})`).classList.add('active');
       render();
     }
-    
+
     function selectPersona(nombre) {
       if (currentPersona === nombre) {
         currentPersona = '';
@@ -1427,23 +2490,59 @@
       }
       render();
     }
-    
+
     function selectCategoria(cat) {
       currentCategoria = currentCategoria === cat ? '' : cat;
       render();
     }
-    
+
     function clearPersona() {
       currentPersona = '';
       document.getElementById('busqueda-input').value = '';
       render();
     }
-    
+
     function clearCategoria() {
       currentCategoria = '';
       render();
     }
-    
+
+    function setTableroRegion() {
+      currentRegion = document.getElementById('tablero-region-select').value;
+      // Sincronizar otros region-selects
+      document.getElementById('desvios-region-select').value = currentRegion;
+      document.getElementById('audit-region-select').value = currentRegion;
+      document.getElementById('flota-region-select').value = currentRegion;
+      render();
+    }
+
+    function setDesviosRegion() {
+      currentRegion = document.getElementById('desvios-region-select').value;
+      // Sincronizar otros region-selects
+      document.getElementById('tablero-region-select').value = currentRegion;
+      document.getElementById('audit-region-select').value = currentRegion;
+      document.getElementById('flota-region-select').value = currentRegion;
+      renderDesvios();
+    }
+
+    function setAuditRegion() {
+      currentRegion = document.getElementById('audit-region-select').value;
+      // Sincronizar otros region-selects
+      document.getElementById('tablero-region-select').value = currentRegion;
+      document.getElementById('desvios-region-select').value = currentRegion;
+      document.getElementById('flota-region-select').value = currentRegion;
+      renderAuditoria();
+    }
+
+    function setFlotaRegion() {
+      currentRegion = document.getElementById('flota-region-select').value;
+      // Sincronizar otros region-selects
+      document.getElementById('tablero-region-select').value = currentRegion;
+      document.getElementById('desvios-region-select').value = currentRegion;
+      document.getElementById('audit-region-select').value = currentRegion;
+      renderFlota();
+    }
+
     // ============ RENDER PRINCIPAL ============
     function render() {
       const kmsByUser = getKmsByUserForPeriodo(currentPeriodo);
@@ -1452,7 +2551,7 @@
       const uniqueUsers = [...new Set(data.map(r => r.usuario))];
       const totalKms = tableroModoKm ? getKmsTotalForUsers(kmsByUser, uniqueUsers) : 0;
       const total = tableroModoKm ? (totalKms > 0 ? totalGasto / totalKms : 0) : totalGasto;
-      
+
       // Calcular valores anteriores para delta
       const prevPeriodo = getPreviousPeriodo(currentPeriodo);
       let prevTotal = 0, prevTrans = 0, prevUsers = 0;
@@ -1466,19 +2565,19 @@
         prevTrans = prevData.length;
         prevUsers = prevUserSet.length;
       }
-      
+
       // Calcular deltas
       const deltaTotalPct = prevTotal > 0 ? ((total - prevTotal) / prevTotal) * 100 : null;
       const deltaTransPct = prevTrans > 0 ? ((data.length - prevTrans) / prevTrans) * 100 : null;
       const deltaUsersPct = prevUsers > 0 ? ((uniqueUsers.length - prevUsers) / prevUsers) * 100 : null;
-      
+
       const formatDelta = (pct, isAmount = true) => {
         if (pct === null) return '';
         const sign = pct >= 0 ? '+' : '';
         const color = isAmount ? (pct >= 0 ? 'color: var(--red);' : 'color: var(--green);') : 'color: var(--text-muted);';
         return `<span style="font-size: 0.75rem; font-weight: 600; ${color}">${sign}${pct.toFixed(0)}%</span>`;
       };
-      
+
       // Indicadores
       const totalLabel = tableroModoKm ? 'Total $/KM ' : 'Total ';
       document.getElementById('total-label').textContent = totalLabel + formatPeriodo(currentPeriodo);
@@ -1488,29 +2587,30 @@
       document.getElementById('trans-delta').innerHTML = formatDelta(deltaTransPct, false);
       document.getElementById('users-value').textContent = uniqueUsers.length;
       document.getElementById('users-delta').innerHTML = formatDelta(deltaUsersPct, false);
-      
+
       // Título del gráfico
       let title = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg> ';
       title += tableroModoKm ? 'Evolución $/KM' : 'Evolución de Gastos';
       if (currentPersona) title += ` <span class="badge">${currentPersona}</span>`;
       if (currentCategoria) title += ` <span class="badge" style="background:${getColor(currentCategoria)}">${currentCategoria}</span>`;
       document.getElementById('chart-title').innerHTML = title;
-      
+
       // Filtros activos
       let filtersHtml = '';
       if (currentPersona) filtersHtml += `<button class="filter-tag" onclick="clearPersona()">✕ Persona</button>`;
       if (currentCategoria) filtersHtml += `<button class="filter-tag" onclick="clearCategoria()">✕ Categoría</button>`;
       document.getElementById('active-filters').innerHTML = filtersHtml;
-      
+
       renderChart();
       const compTotal = tableroModoKm ? buildCategoryValues(data, kmsByUser).total : totalGasto;
       renderComposition(data, compTotal);
+      renderUsuariosInactivos();
       renderRanking(data, kmsByUser);
     }
-    
+
     function renderChart() {
       const periodosChart = getPeriodosGrafico();
-      
+
       const chartData = periodosChart.map(periodo => {
         let dataP = rawData.filter(r => r.periodo === periodo);
         if (currentPersona) dataP = dataP.filter(r => r.usuario === currentPersona);
@@ -1525,15 +2625,15 @@
           categorias: valores.categorias
         };
       });
-      
+
       const maxVal = Math.max(...chartData.map(d => d.total), 1) * 1.15;
-      
+
       const html = chartData.map(d => {
         const segments = Object.entries(d.categorias)
           .sort((a, b) => b[1] - a[1])
           .map(([cat, val]) => `<div class="bar-segment" style="height:${d.total > 0 ? (val / d.total) * 100 : 0}%;background:${getColor(cat)}" title="${cat}: ${formatTableroValue(val)}"></div>`)
           .join('');
-        
+
         return `
           <div class="bar-column">
             <div class="bar-container" style="height:${(d.total / maxVal) * 100}%">${segments}</div>
@@ -1542,10 +2642,10 @@
           </div>
         `;
       }).join('');
-      
+
       document.getElementById('bar-chart').innerHTML = html;
     }
-    
+
     function renderComposition(data, total) {
       const kmsByUser = getKmsByUserForPeriodo(currentPeriodo);
       const valores = buildCategoryValues(data, kmsByUser);
@@ -1563,7 +2663,7 @@
         const prevValores = buildCategoryValues(prevData, kmsPrev);
         Object.assign(prevCats, prevValores.categorias);
       }
-      
+
       // Barra de composición
       const barHtml = sorted.map(([cat, val]) => {
         const pct = totalValue > 0 ? (val / totalValue) * 100 : 0;
@@ -1573,7 +2673,7 @@
                      onclick="selectCategoria('${cat}')"></div>`;
       }).join('');
       document.getElementById('composition-bar').innerHTML = barHtml;
-      
+
       // Lista
       const items = mostrarMasCategorias ? sorted : sorted.slice(0, 5);
       const listHtml = items.map(([cat, val]) => {
@@ -1595,16 +2695,16 @@
           </div>
         `;
       }).join('');
-      
+
       const showMoreBtn = sorted.length > 5 ? `
         <button class="show-more" onclick="toggleMasCategorias()">
           ${mostrarMasCategorias ? '▲ Mostrar menos' : '▼ Mostrar ' + (sorted.length - 5) + ' más'}
         </button>
       ` : '';
-      
+
       document.getElementById('category-list').innerHTML = listHtml + showMoreBtn;
     }
-    
+
     function toggleMasCategorias() {
       mostrarMasCategorias = !mostrarMasCategorias;
       const kmsByUser = getKmsByUserForPeriodo(currentPeriodo);
@@ -1613,16 +2713,16 @@
       const total = tableroModoKm ? buildCategoryValues(data, kmsByUser).total : totalGasto;
       renderComposition(data, total);
     }
-    
+
     function renderRanking(data, kmsByUser) {
       const titleEl = document.getElementById('ranking-title');
       const listEl = document.getElementById('ranking-list');
       const kmsMap = kmsByUser || getKmsByUserForPeriodo(currentPeriodo);
-      
+
       if (currentPersona) {
         // Mostrar transacciones de la persona
         titleEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Consumos de ${currentPersona}`;
-        
+
         const sorted = [...data].sort((a, b) => b.importe - a.importe);
         const kmsPersona = kmsMap[currentPersona] || 0;
         listEl.innerHTML = sorted.map(t => `
@@ -1635,13 +2735,13 @@
           </div>
         `).join('');
       } else {
-        // Mostrar ranking de usuarios - TODOS, no solo top 10
+        // Mostrar ranking de usuarios - TODOS, con filtrado por búsqueda
         const rankingLabel = tableroModoKm ? 'Ranking $/KM' : 'Ranking de Gastos';
         titleEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V18"/><path d="M14 22V18"/><path d="M18 4H6v11a6 6 0 0 0 12 0V4z"/></svg> ${rankingLabel}`;
-        
+
         const porUsuario = {};
         data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
-        
+
         // Calcular valores del mes anterior para deltas
         const prevPeriodo = getPreviousPeriodo(currentPeriodo);
         const prevRanking = {};
@@ -1651,8 +2751,8 @@
           if (tableroModoKm) prevData = prevData.filter(r => (kmsPrev[r.usuario] || 0) > 0);
           prevData.forEach(r => { prevRanking[r.usuario] = (prevRanking[r.usuario] || 0) + r.importe; });
         }
-        
-        const ranking = Object.entries(porUsuario)
+
+        let ranking = Object.entries(porUsuario)
           .map(([nombre, total]) => {
             const kms = kmsMap[nombre] || 0;
             const value = tableroModoKm && kms > 0 ? total / kms : total;
@@ -1663,15 +2763,23 @@
             return [nombre, value, deltaPct];
           })
           .sort((a, b) => b[1] - a[1]);
-        
+
+        // Aplicar filtro de búsqueda
+        const busqueda = document.getElementById('busqueda-input')?.value.toLowerCase().trim() || '';
+        if (busqueda) {
+          ranking = ranking.filter(([nombre]) => nombre.toLowerCase().includes(busqueda));
+        }
+
         listEl.innerHTML = ranking.map(([nombre, total, deltaPct], i) => {
           const deltaSign = deltaPct && deltaPct >= 0 ? '+' : '';
           const deltaColor = deltaPct === null ? '' : (deltaPct >= 0 ? 'color: var(--red);' : 'color: var(--green);');
           const deltaHtml = deltaPct === null ? '' : `<span style="font-size: 0.75rem; font-weight: 600; ${deltaColor}">${deltaSign}${deltaPct.toFixed(0)}%</span>`;
+          const kms = kmsMap[nombre] || 0;
+          const kmsHtml = tableroModoKm && kms > 0 ? ` <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 400;">(${kms.toLocaleString('es-AR')} km)</span>` : '';
           return `
           <div class="ranking-item clickable" onclick="selectPersona('${nombre}')">
             <div class="ranking-pos">${i + 1}</div>
-            <span class="ranking-name">${nombre}</span>
+            <span class="ranking-name">${nombre}${kmsHtml}</span>
             <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-left: auto;">
               <span class="ranking-amount">${formatTableroValue(total)}</span>
               ${deltaHtml}
@@ -1681,80 +2789,262 @@
         }).join('');
       }
     }
-    
+
+    function renderUsuariosInactivos() {
+      const periodoActual = currentPeriodo;
+      const periodo1 = getPreviousPeriodo(periodoActual);
+      const periodo2 = periodo1 ? getPreviousPeriodo(periodo1) : null;
+
+      if (!periodo1 && !periodo2) {
+        document.getElementById('usuarios-inactivos-list').innerHTML = '<div class="empty-state"><p>No hay suficiente historial para analizar</p></div>';
+        return;
+      }
+
+      // Obtener usuarios que cargaron en los últimos 2 meses (excluyendo el actual)
+      const periodosHistorico = [periodo1, periodo2].filter(p => p !== null);
+      const usuariosActivos = new Set();
+      periodosHistorico.forEach(p => {
+        rawData.filter(r => r.periodo === p).forEach(r => usuariosActivos.add(r.usuario));
+      });
+
+      // Aplicar filtro de región si está activo
+      let usuariosFiltrados = [...usuariosActivos];
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        usuariosFiltrados = usuariosFiltrados.filter(u => usuariosEnRegion.includes(u));
+      }
+
+      // Verificar quiénes NO cargaron en el periodo actual
+      const usuariosConCargaActual = new Set(
+        rawData.filter(r => r.periodo === periodoActual).map(r => r.usuario)
+      );
+
+      const usuariosInactivos = usuariosFiltrados.filter(u => !usuariosConCargaActual.has(u));
+
+      if (usuariosInactivos.length === 0) {
+        document.getElementById('usuarios-inactivos-list').innerHTML = '<div class="empty-state"><p>Todos los usuarios cargaron gastos este mes ✓</p></div>';
+        return;
+      }
+
+      // Para cada usuario inactivo, obtener su última transacción
+      const inactivosConDetalle = usuariosInactivos.map(usuario => {
+        const transacciones = rawData
+          .filter(r => r.usuario === usuario)
+          .sort((a, b) => {
+            // Ordenar por periodo desc, luego por fecha desc
+            if (a.periodo !== b.periodo) {
+              return b.periodo.localeCompare(a.periodo);
+            }
+            return b.fecha.localeCompare(a.fecha);
+          });
+
+        const ultimaTransaccion = transacciones[0];
+        return {
+          usuario,
+          fecha: ultimaTransaccion.fecha,
+          monto: ultimaTransaccion.importe,
+          comercio: ultimaTransaccion.comercio || '-',
+          categoria: ultimaTransaccion.categoria
+        };
+      }).sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+      const html = inactivosConDetalle.map(item => `
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr 1fr; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); align-items: center;">
+          <span style="font-weight: 600; font-size: 0.9rem;">${item.usuario}</span>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">${item.fecha}</span>
+          <span style="font-weight: 600; font-size: 0.9rem;">${formatCurrency(item.monto)}</span>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">${item.comercio}</span>
+          <span class="cat-pill" style="background:${getColor(item.categoria)}; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600; width: fit-content;">${item.categoria}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('usuarios-inactivos-list').innerHTML = html;
+    }
+
     // ============ DESVÍOS ============
     function renderDesvios() {
       const periodo = document.getElementById('desvios-periodo').value || currentPeriodo;
       const busqueda = document.getElementById('desvios-busqueda')?.value.toLowerCase().trim() || '';
       let data = rawData.filter(r => r.periodo === periodo);
-      
+
+      // Filtrar por región
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        data = data.filter(r => usuariosEnRegion.includes(r.usuario));
+      }
+
       // Filtrar usuarios con KMs si estamos en modo $/KM
       if (desviosModoKm) {
         const kmsByUser = getKmsByUserForPeriodo(periodo);
         data = data.filter(r => (kmsByUser[r.usuario] || 0) > 0);
       }
-      
+
       const usuarios = [...new Set(data.map(r => r.usuario))];
       if (usuarios.length === 0) {
         document.getElementById('desvios-list').innerHTML = '<div class="empty-state"><p>No hay usuarios en este período</p></div>';
         return;
       }
-      
+
       // Calcular promedio
       let promedio;
       let porUsuario = {};
-      
+      let kmsUsuario = {}; // Guardar KMs por usuario para mostrar
+
       if (desviosModoKm) {
         // Modo $/KM: promedio = suma gastos / suma kms
         const kmsByUser = getKmsByUserForPeriodo(periodo);
         const totalGasto = data.reduce((acc, r) => acc + r.importe, 0);
         const totalKms = usuarios.reduce((acc, u) => acc + (kmsByUser[u] || 0), 0);
         promedio = totalKms > 0 ? totalGasto / totalKms : 0;
-        
+
         // Calcular valor $/KM por usuario
         usuarios.forEach(usuario => {
           const gasto = data.filter(r => r.usuario === usuario).reduce((a, r) => a + r.importe, 0);
           const kms = kmsByUser[usuario] || 0;
           porUsuario[usuario] = kms > 0 ? gasto / kms : 0;
+          kmsUsuario[usuario] = kms; // Guardar los KMs
         });
       } else {
         // Modo montos: promedio = suma gastos / cantidad usuarios
         const totalGlobal = data.reduce((acc, r) => acc + r.importe, 0);
         promedio = usuarios.length > 0 ? totalGlobal / usuarios.length : 0;
-        
+
         data.forEach(r => { porUsuario[r.usuario] = (porUsuario[r.usuario] || 0) + r.importe; });
       }
-      
+
       let desvios = Object.entries(porUsuario)
-        .map(([usuario, valor]) => ({
-          usuario,
-          valor,
-          promedio,
-          desvio: valor - promedio,
-          desvioPct: promedio > 0 ? ((valor - promedio) / promedio) * 100 : 0
-        }))
-        .sort((a, b) => b.desvioPct - a.desvioPct); // Ordenar por % de desvío
-      
+        .map(([usuario, valor]) => {
+          // Obtener datos de sueldos para calcular indicadores
+          const sueldoData = sueldosData.find(s => s.periodo === periodo && s.asociado === usuario);
+          let ind1 = null, ind2 = null, ind3 = null;
+
+          if (sueldoData && sueldoData.importe > 0) {
+            const sueldo = sueldoData.sueldo || 0;
+            const importe = sueldoData.importe || 0;
+            const gastosTotales = valor;
+
+            ind1 = importe > 0 ? (sueldo / importe) * 100 : 0; // Sueldo/Importe
+            ind2 = importe > 0 ? ((sueldo - gastosTotales) / importe) * 100 : 0; // (Sueldo-Gastos)/Importe
+            ind3 = importe > 0 ? (gastosTotales / importe) * 100 : 0; // Gastos/Importe
+          }
+
+          return {
+            usuario,
+            valor,
+            promedio,
+            desvio: valor - promedio,
+            desvioPct: promedio > 0 ? ((valor - promedio) / promedio) * 100 : 0,
+            kms: kmsUsuario[usuario] || 0,
+            sueldoImporte: ind1,
+            sueldoGastoImporte: ind2,
+            gastoImporte: ind3
+          };
+        });
+
+      // Ordenar según criterio seleccionado
+      switch (desviosOrdenarPor) {
+        case 'sueldo-importe':
+          desvios.sort((a, b) => {
+            if (a.sueldoImporte === null && b.sueldoImporte === null) return 0;
+            if (a.sueldoImporte === null) return 1;
+            if (b.sueldoImporte === null) return -1;
+            return b.sueldoImporte - a.sueldoImporte;
+          });
+          break;
+        case 'sueldo-gasto-importe':
+          desvios.sort((a, b) => {
+            if (a.sueldoGastoImporte === null && b.sueldoGastoImporte === null) return 0;
+            if (a.sueldoGastoImporte === null) return 1;
+            if (b.sueldoGastoImporte === null) return -1;
+            return b.sueldoGastoImporte - a.sueldoGastoImporte;
+          });
+          break;
+        case 'gasto-importe':
+          desvios.sort((a, b) => {
+            if (a.gastoImporte === null && b.gastoImporte === null) return 0;
+            if (a.gastoImporte === null) return 1;
+            if (b.gastoImporte === null) return -1;
+            return b.gastoImporte - a.gastoImporte;
+          });
+          break;
+        case 'desvio':
+        default:
+          desvios.sort((a, b) => b.desvioPct - a.desvioPct);
+          break;
+      }
+
       // Aplicar filtro de búsqueda
       if (busqueda) {
         desvios = desvios.filter(d => d.usuario.toLowerCase().includes(busqueda));
       }
-      
+
       if (desvios.length === 0) {
         document.getElementById('desvios-list').innerHTML = '<div class="empty-state"><p>No hay usuarios en este período</p></div>';
         return;
       }
-      
+
       document.getElementById('desvios-list').innerHTML = desvios.map((d, i) => {
         const desvioClass = d.desvioPct > 50 ? 'danger' : (d.desvioPct > 0 ? 'warning' : '');
         const desvioPrefix = d.desvio >= 0 ? '+' : '';
         const formatFn = desviosModoKm ? formatRate : formatCurrency;
+
+        let indicadoresHtml = '';
+        if (d.sueldoImporte !== null) {
+          // Calcular variaciones respecto al mes anterior
+          const prevPeriodo = getPreviousPeriodo(periodo);
+          const sueldoDataPrev = prevPeriodo ? sueldosData.find(s => s.periodo === prevPeriodo && s.asociado === d.usuario) : null;
+
+          let var1 = null, var2 = null, var3 = null;
+          if (sueldoDataPrev && sueldoDataPrev.importe > 0) {
+            const sueldoPrev = sueldoDataPrev.sueldo || 0;
+            const importePrev = sueldoDataPrev.importe || 0;
+            const gastosTotalesPrev = rawData
+              .filter(r => r.periodo === prevPeriodo && r.usuario === d.usuario)
+              .reduce((acc, r) => acc + r.importe, 0);
+
+            const ind1Prev = importePrev > 0 ? (sueldoPrev / importePrev) * 100 : 0;
+            const ind2Prev = importePrev > 0 ? ((sueldoPrev - gastosTotalesPrev) / importePrev) * 100 : 0;
+            const ind3Prev = importePrev > 0 ? (gastosTotalesPrev / importePrev) * 100 : 0;
+
+            var1 = d.sueldoImporte - ind1Prev;
+            var2 = d.sueldoGastoImporte - ind2Prev;
+            var3 = d.gastoImporte - ind3Prev;
+          }
+
+          const fmtVar = (v, useColor = false) => {
+            if (v === null) return '<span style="color: var(--text-secondary);">—</span>';
+            const sign = v >= 0 ? '+' : '';
+            const color = useColor ? (v >= 0 ? 'var(--red)' : 'var(--green)') : 'var(--text-secondary)';
+            return `<span style="color: ${color}; font-size: 0.85rem;">${sign}${v.toFixed(1)}pp</span>`;
+          };
+
+          indicadoresHtml = `
+            <div class="desvio-stat">
+              <span class="label">Sueldo/Importe</span>
+              <span class="value">${d.sueldoImporte.toFixed(1)}%</span>
+              ${fmtVar(var1, false)}
+            </div>
+            <div class="desvio-stat">
+              <span class="label">(Sueldo-Gastos)/Importe</span>
+              <span class="value">${d.sueldoGastoImporte.toFixed(1)}%</span>
+              ${fmtVar(var2, false)}
+            </div>
+            <div class="desvio-stat">
+              <span class="label">Gastos/Importe</span>
+              <span class="value">${d.gastoImporte.toFixed(1)}%</span>
+              ${fmtVar(var3, true)}
+            </div>
+          `;
+        }
+
+        const kmsHtml = desviosModoKm && d.kms > 0 ? ` <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 400;">(${d.kms.toLocaleString('es-AR')} km)</span>` : '';
+
         return `
         <div class="desvio-card" onclick="toggleDesvioDetail(this, '${d.usuario}', '${periodo}')">
           <div class="desvio-card-header">
             <div class="desvio-rank">#${i + 1}</div>
             <div class="desvio-info">
-              <span class="desvio-name">${d.usuario}</span>
+              <span class="desvio-name">${d.usuario}${kmsHtml}</span>
               <div class="desvio-stats">
                 <div class="desvio-stat">
                   <span class="label">${desviosModoKm ? '$/KM' : 'Gasto'}</span>
@@ -1768,6 +3058,7 @@
                   <span class="label">Desvío</span>
                   <span class="badge ${desvioClass}" style="${d.desvio < 0 ? 'background: #dcfce7; color: #166534;' : ''}">${desvioPrefix}${d.desvioPct.toFixed(0)}%</span>
                 </div>
+                ${indicadoresHtml}
               </div>
             </div>
           </div>
@@ -1778,41 +3069,41 @@
       `;
       }).join('');
     }
-    
+
     function toggleDesvioDetail(card, usuario, periodo) {
       const isExpanded = card.classList.contains('expanded');
-      
+
       // Close all other cards
       document.querySelectorAll('.desvio-card').forEach(c => c.classList.remove('expanded'));
-      
+
       if (isExpanded) {
         card.classList.remove('expanded');
         return;
       }
-      
+
       card.classList.add('expanded');
-      
+
       // Calculate detail per category
       const prevPeriodo = getPreviousPeriodo(periodo);
       const allCategorias = [...new Set(rawData.map(r => r.categoria))];
       const kmsByUser = getKmsByUserForPeriodo(periodo);
       const kmsPrev = prevPeriodo ? getKmsByUserForPeriodo(prevPeriodo) : {};
       const usuarioKms = kmsByUser[usuario] || 0;
-      
+
       const detailByCategory = allCategorias.map(cat => {
         // Gasto actual del usuario en esta categoría
         const gastoActual = rawData
           .filter(r => r.periodo === periodo && r.usuario === usuario && r.categoria === cat)
           .reduce((acc, r) => acc + r.importe, 0);
-        
+
         // Gasto anterior del usuario en esta categoría
         const gastoAnterior = prevPeriodo ? rawData
           .filter(r => r.periodo === prevPeriodo && r.usuario === usuario && r.categoria === cat)
           .reduce((acc, r) => acc + r.importe, 0) : 0;
-        
+
         // Promedio por categoría
         let promedioResto, gastoActualDisplay, gastoAnteriorDisplay;
-        
+
         if (desviosModoKm) {
           // Modo $/KM: calcular promedio $/KM de usuarios con KMs
           const dataCat = rawData.filter(r => r.periodo === periodo && r.categoria === cat);
@@ -1838,12 +3129,12 @@
           gastoActualDisplay = gastoActual;
           gastoAnteriorDisplay = gastoAnterior;
         }
-        
+
         const deltaMonto = gastoActualDisplay - gastoAnteriorDisplay;
         const deltaPct = gastoAnteriorDisplay > 0 ? (deltaMonto / gastoAnteriorDisplay) * 100 : null;
         const deltaRestoMonto = gastoActualDisplay - promedioResto;
         const deltaRestoPct = promedioResto > 0 ? ((gastoActualDisplay - promedioResto) / promedioResto) * 100 : null;
-        
+
         return {
           categoria: cat,
           monto: gastoActualDisplay,
@@ -1853,7 +3144,7 @@
           deltaRestoPct
         };
       }).sort((a, b) => b.monto - a.monto);
-      
+
       const fmt = desviosModoKm ? formatRate : formatCurrency;
       const fmtPct = (pct) => {
         if (pct === null) return '—';
@@ -1864,7 +3155,7 @@
         if (pct === null) return '';
         return pct >= 0 ? 'color: var(--red);' : 'color: var(--green);';
       };
-      
+
       const tableHtml = `
         <table class="desvio-detail-table">
           <thead>
@@ -1891,10 +3182,10 @@
           </tbody>
         </table>
       `;
-      
+
       card.querySelector('.desvio-detail-content').innerHTML = tableHtml;
     }
-    
+
     function verDetalleDesvio(usuario) {
       // Sincronizar período
       document.getElementById('audit-periodo').value = currentPeriodo;
@@ -1902,15 +3193,41 @@
       showTab('auditoria');
       renderAuditoria();
     }
-    
+
     // ============ AUDITORÍA ============
+    function setAuditCategoria() {
+      auditCategoriaFilter = document.getElementById('audit-categoria').value;
+      renderAuditoria();
+    }
+
+    function clearAuditCategoria() {
+      auditCategoriaFilter = '';
+      document.getElementById('audit-categoria').value = '';
+      renderAuditoria();
+    }
+
+    function setAuditPersona() {
+      auditPersonaFilter = document.getElementById('audit-busqueda').value.toLowerCase();
+      renderAuditoria();
+    }
+
+    function clearAuditPersona() {
+      auditPersonaFilter = '';
+      document.getElementById('audit-busqueda').value = '';
+      renderAuditoria();
+    }
+
     function renderAuditoria() {
       const periodo = document.getElementById('audit-periodo').value;
-      const busqueda = document.getElementById('audit-busqueda').value.toLowerCase();
-      
+
       let filtered = rawData;
       if (periodo) filtered = filtered.filter(r => r.periodo === periodo);
-      if (busqueda) filtered = filtered.filter(r => r.usuario.toLowerCase().includes(busqueda));
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        filtered = filtered.filter(r => usuariosEnRegion.includes(r.usuario));
+      }
+      if (auditPersonaFilter) filtered = filtered.filter(r => r.usuario.toLowerCase().includes(auditPersonaFilter));
+      if (auditCategoriaFilter) filtered = filtered.filter(r => r.categoria === auditCategoriaFilter);
 
       const total = filtered.reduce((acc, r) => acc + r.importe, 0);
       const totalCount = filtered.length;
@@ -1920,7 +3237,7 @@
         <span>${totalCount} transacciones</span>
         <span>Total: ${formatCurrency(total)}</span>
       `;
-      
+
       document.getElementById('audit-tbody').innerHTML = data.map(t => `
         <tr>
           <td>${t.fecha}</td>
@@ -1930,19 +3247,66 @@
           <td class="text-right">${formatCurrency(t.importe)}</td>
         </tr>
       `).join('');
+
+      // Actualizar filtros activos
+      let filtersHtml = '';
+      if (auditPersonaFilter) filtersHtml += `<button class="filter-tag" onclick="clearAuditPersona()">✕ ${auditPersonaFilter}</button>`;
+      if (auditCategoriaFilter) filtersHtml += `<button class="filter-tag" onclick="clearAuditCategoria()">✕ ${auditCategoriaFilter}</button>`;
+      document.getElementById('audit-active-filters').innerHTML = filtersHtml;
+      document.getElementById('audit-active-filters').style.display = filtersHtml ? 'flex' : 'none';
     }
-        
+
     // ============ FLOTA ============
+    function setFlotaOrden(modo) {
+      flotaOrdenarPor = modo;
+      document.getElementById('flota-orden-kms').classList.toggle('active', modo === 'kms');
+      document.getElementById('flota-orden-monto').classList.toggle('active', modo === 'monto');
+      renderFlota();
+    }
+
+    function setFlotaCategoriaGasto() {
+      flotaCategoriaGasto = document.getElementById('flota-categoria-gasto').value;
+      renderFlota();
+    }
+
+    function setFlotaTipoVehiculo() {
+      flotaTipoVehiculo = document.getElementById('flota-tipo-vehiculo').value;
+      renderFlota();
+    }
+
     function renderFlota() {
       const periodo = document.getElementById('flota-periodo').value;
       const busqueda = document.getElementById('flota-busqueda').value.toLowerCase();
+
+      // Si no hay búsqueda, resetear el usuario seleccionado
+      if (!busqueda) {
+        flotaUsuarioSeleccionado = null;
+        // Ocultar toggles de gráfico
+        const togglesDiv = document.getElementById('flota-chart-toggles');
+        if (togglesDiv) {
+          togglesDiv.style.display = 'none';
+        }
+        // Resetear checkboxes
+        flotaMostrarGasto = true;
+        flotaMostrarAmortizacion = true;
+        document.getElementById('flota-show-gasto').checked = true;
+        document.getElementById('flota-show-amortizacion').checked = true;
+      }
 
       const manualFlotaOverrides = {
         'Agustin Acuna': { propio: 'PROPIO' }
       };
 
-      const flotaPeriodo = flotaData.filter(f => f.periodo === periodo);
-      const combustPeriodo = rawData.filter(r => r.periodo === periodo && r.categoria === 'Combustible');
+      let flotaPeriodo = flotaData.filter(f => f.periodo === periodo);
+      let combustPeriodo = rawData.filter(r => r.periodo === periodo && r.categoria === 'Combustible');
+
+      // Filtrar por región
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        flotaPeriodo = flotaPeriodo.filter(f => usuariosEnRegion.includes(f.usuario));
+        combustPeriodo = combustPeriodo.filter(r => usuariosEnRegion.includes(r.usuario));
+      }
+
       const usuariosPeriodo = [...new Set([
         ...flotaPeriodo.map(f => f.usuario),
         ...combustPeriodo.map(r => r.usuario),
@@ -1976,31 +3340,62 @@
       let data = flotaPeriodo.concat(placeholders);
       if (busqueda) data = data.filter(f => f.usuario.toLowerCase().includes(busqueda) || f.patente.toLowerCase().includes(busqueda));
 
+      // Aplicar filtro de tipo de vehículo
+      if (flotaTipoVehiculo) {
+        data = data.filter(f => {
+          const propio = (f.propio || '').toUpperCase();
+          return propio === flotaTipoVehiculo;
+        });
+      }
+
       const usuarioSeleccionado = busqueda ? (usuariosPeriodo.find(u => u.toLowerCase() === busqueda) || '') : '';
-      
+
+      // Usar el usuario seleccionado globalmente si existe, sino el de búsqueda
+      const usuarioParaGrafico = flotaUsuarioSeleccionado ? flotaUsuarioSeleccionado.usuario : usuarioSeleccionado;
+
       // Renderizar gráfico (línea doble eje, 6 meses)
-      renderFlotaChart(periodo, usuarioSeleccionado);
+      renderFlotaChart(periodo, usuarioParaGrafico);
+      renderFlotaAmortizacionPorKm(periodo);
       renderFlotaKPIs(periodo, usuarioSeleccionado);
       renderFlotaRankingKm(periodo, usuarioSeleccionado || null);
-      
+
       // Renderizar lista
       const periodosList = [...new Set(rawData.map(r => r.periodo))].sort();
       const periodoIdx = periodosList.indexOf(periodo);
       const periodoAnterior = periodoIdx > 0 ? periodosList[periodoIdx - 1] : null;
-      
-      
-      const sorted = data.sort((a, b) => b.kms - a.kms);
-      
+
+      // Etiqueta dinámica según categoría seleccionada
+      const gastoLabel = flotaCategoriaGasto ? flotaCategoriaGasto : 'Gasto Total';
+
+      // Ordenar según preferencia
+      const sorted = flotaOrdenarPor === 'kms'
+        ? data.sort((a, b) => b.kms - a.kms)
+        : data.sort((a, b) => {
+          const gastoA = flotaCategoriaGasto
+            ? rawData.filter(r => r.periodo === a.periodo && r.usuario === a.usuario && r.categoria === flotaCategoriaGasto).reduce((acc, r) => acc + r.importe, 0)
+            : rawData.filter(r => r.periodo === a.periodo && r.usuario === a.usuario).reduce((acc, r) => acc + r.importe, 0);
+          const gastoB = flotaCategoriaGasto
+            ? rawData.filter(r => r.periodo === b.periodo && r.usuario === b.usuario && r.categoria === flotaCategoriaGasto).reduce((acc, r) => acc + r.importe, 0)
+            : rawData.filter(r => r.periodo === b.periodo && r.usuario === b.usuario).reduce((acc, r) => acc + r.importe, 0);
+          return gastoB - gastoA;
+        });
+
       document.getElementById('flota-list').innerHTML = sorted.map(f => {
-        // Gasto total del usuario en este período
-        const gastoTotal = rawData.filter(r => r.periodo === f.periodo && r.usuario === f.usuario).reduce((acc, r) => acc + r.importe, 0);
+        // Gasto según categoría seleccionada o total
+        const gastoTotal = flotaCategoriaGasto
+          ? rawData.filter(r => r.periodo === f.periodo && r.usuario === f.usuario && r.categoria === flotaCategoriaGasto).reduce((acc, r) => acc + r.importe, 0)
+          : rawData.filter(r => r.periodo === f.periodo && r.usuario === f.usuario).reduce((acc, r) => acc + r.importe, 0);
         const ratio = f.kms > 0 ? (gastoTotal / f.kms) : 0;
-        
+
         // Datos del período anterior
-        const gastoTotalAnterior = periodoAnterior ? rawData.filter(r => r.periodo === periodoAnterior && r.usuario === f.usuario).reduce((acc, r) => acc + r.importe, 0) : 0;
+        const gastoTotalAnterior = periodoAnterior
+          ? (flotaCategoriaGasto
+            ? rawData.filter(r => r.periodo === periodoAnterior && r.usuario === f.usuario && r.categoria === flotaCategoriaGasto).reduce((acc, r) => acc + r.importe, 0)
+            : rawData.filter(r => r.periodo === periodoAnterior && r.usuario === f.usuario).reduce((acc, r) => acc + r.importe, 0))
+          : 0;
         const kmsAnterior = periodoAnterior ? flotaData.filter(fl => fl.periodo === periodoAnterior && fl.usuario === f.usuario).reduce((acc, fl) => acc + fl.kms, 0) : 0;
         const ratioAnterior = kmsAnterior > 0 ? (gastoTotalAnterior / kmsAnterior) : 0;
-        
+
         // Variaciones
         const deltaKms = kmsAnterior > 0 ? ((f.kms - kmsAnterior) / kmsAnterior) * 100 : 0;
         const deltaGasto = gastoTotalAnterior > 0 ? ((gastoTotal - gastoTotalAnterior) / gastoTotalAnterior) * 100 : 0;
@@ -2008,7 +3403,7 @@
         const propioLabel = f.propio || '-';
         const esPropio = propioLabel.toUpperCase() === 'PROPIO';
         const kmsTotalesVehiculo = f.kmsTotalesVehiculo || 0;
-        
+
         return `
           <div class="flota-card" data-usuario="${f.usuario.replace(/"/g, '&quot;')}" style="cursor: pointer;">
             <div class="flota-header">
@@ -2025,7 +3420,7 @@
                 <span class="flota-stat-meta" style="color: ${deltaKms >= 0 ? 'var(--green)' : 'var(--red)'}">Δ vs mes ant: ${kmsAnterior > 0 ? (deltaKms >= 0 ? '+' : '') + deltaKms.toFixed(1) + '%' : '-'}</span>
               </div>
               <div class="flota-stat">
-                <span class="flota-stat-label">Gasto Total</span>
+                <span class="flota-stat-label">${gastoLabel}</span>
                 <span class="flota-stat-value">${gastoTotal > 0 ? formatCurrency(gastoTotal) : '-'}</span>
                 <span class="flota-stat-meta" style="color: ${deltaGasto >= 0 ? 'var(--red)' : 'var(--green)'}">Δ vs mes ant: ${gastoTotalAnterior > 0 ? (deltaGasto >= 0 ? '+' : '') + deltaGasto.toFixed(1) + '%' : '-'}</span>
               </div>
@@ -2041,7 +3436,7 @@
               ${esPropio ? `
               <div class="flota-stat">
                 <span class="flota-stat-label">Amortizacion</span>
-                <span class="flota-stat-value">${f.amortizacion > 0 ? formatCurrency(f.amortizacion) : '-'}</span>
+                <span class="flota-stat-value">${f.amortizacion !== 0 ? formatCurrency(f.amortizacion) : '-'}</span>
               </div>
               ` : `
               <div class="flota-stat">
@@ -2053,16 +3448,16 @@
           </div>
         `;
       }).join('');
-      
+
       // Agregar event listeners a las tarjetas
       document.querySelectorAll('.flota-card[data-usuario]').forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
           const usuario = this.getAttribute('data-usuario');
           selectFlotaUsuario(usuario);
         });
       });
     }
-    
+
     function getLastPeriodosFrom(periodo, count) {
       if (!periodo || periodo.length !== 6) return [];
       const year = parseInt(periodo.slice(0, 4), 10);
@@ -2083,7 +3478,7 @@
         document.getElementById('flota-chart').innerHTML = '';
         return;
       }
-      
+
       // Obtener categoría seleccionada
       const categoriaSelector = document.getElementById('flota-categoria-selector');
       const categoriaSeleccionada = categoriaSelector ? categoriaSelector.value : 'Combustible';
@@ -2091,16 +3486,68 @@
       const etiquetaGasto = isTotal ? 'Total Gastos' : categoriaSeleccionada;
 
       const kmsSerie = periodos6.map(p => {
-        const data = flotaData.filter(f => f.periodo === p && (!usuario || f.usuario === usuario));
+        const data = flotaData.filter(f => {
+          const periodoMatch = f.periodo === p;
+          const usuarioMatch = !usuario || f.usuario === usuario;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(f.usuario);
+          }
+          return periodoMatch && usuarioMatch && regionMatch;
+        });
         return data.reduce((acc, f) => acc + f.kms, 0);
       });
       const gastoSerie = periodos6.map(p => {
-        const data = rawData.filter(r => r.periodo === p && (!usuario || r.usuario === usuario) && (isTotal || r.categoria === categoriaSeleccionada));
+        const data = rawData.filter(r => {
+          const periodoMatch = r.periodo === p;
+          const usuarioMatch = !usuario || r.usuario === usuario;
+          const categoriaMatch = isTotal || r.categoria === categoriaSeleccionada;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(r.usuario);
+          }
+          return periodoMatch && usuarioMatch && categoriaMatch && regionMatch;
+        });
         return data.reduce((acc, r) => acc + r.importe, 0);
       });
 
+      // Obtener serie de amortización (solo para usuarios con PROPIO)
+      const amortizacionSerie = periodos6.map(p => {
+        const data = flotaData.filter(f => {
+          const periodoMatch = f.periodo === p;
+          const usuarioMatch = !usuario || f.usuario === usuario;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(f.usuario);
+          }
+          return periodoMatch && usuarioMatch && regionMatch;
+        });
+        return data.reduce((acc, f) => acc + (f.amortizacion || 0), 0);
+      });
+
       const maxKms = Math.max(...kmsSerie, 1);
-      const maxGasto = Math.max(...gastoSerie, 1);
+      // Determinar si el usuario tiene vehículo PROPIO consultando flotaData
+      const userData = usuario ? flotaData.find(f => f.periodo === periodo && f.usuario === usuario) : null;
+      const esPropio = userData && (userData.propio || '').toUpperCase() === 'PROPIO';
+
+      // Debug: mostrar información de amortización
+      if (usuario && esPropio) {
+        console.log('Usuario PROPIO:', usuario);
+        console.log('Periodos:', periodos6);
+        console.log('Serie de amortización:', amortizacionSerie);
+        console.log('UserData:', userData);
+      }
+
+      const hasAmortizacion = esPropio && flotaMostrarAmortizacion;
+      const gastoMaxRaw = hasAmortizacion
+        ? Math.max(...gastoSerie, ...amortizacionSerie, 0)
+        : Math.max(...gastoSerie, 0);
+      const gastoMinRaw = hasAmortizacion
+        ? Math.min(...gastoSerie, ...amortizacionSerie, 0)
+        : Math.min(...gastoSerie, 0);
 
       // Round scale to nice numbers
       const roundScale = (val) => {
@@ -2113,7 +3560,8 @@
         return nice * magnitude;
       };
       const maxKmsRound = roundScale(maxKms * 1.1);
-      const maxGastoRound = roundScale(maxGasto * 1.1);
+      const maxGastoAxis = gastoMaxRaw > 0 ? roundScale(gastoMaxRaw * 1.1) : 0;
+      const minGastoAxis = gastoMinRaw < 0 ? -roundScale(Math.abs(gastoMinRaw) * 1.1) : 0;
 
       const w = 1170;
       const h = 480;
@@ -2124,59 +3572,94 @@
       const xStep = innerW / (periodos6.length - 1);
       const xFor = i => padding.left + i * xStep;
       const yKms = v => padding.top + innerH - (v / maxKmsRound) * innerH;
-      const yGasto = v => padding.top + innerH - (v / maxGastoRound) * innerH;
+      const gastoRange = (maxGastoAxis - minGastoAxis) || 1;
+      const yGasto = v => padding.top + innerH - ((v - minGastoAxis) / gastoRange) * innerH;
 
       const line = (serie, yFn, color, labelFn) => {
         const points = serie.map((v, i) => `${xFor(i)},${yFn(v)}`).join(' ');
         const dots = serie.map((v, i) => {
           const label = labelFn(v, periodos6[i]);
-          return `<circle cx="${xFor(i)}" cy="${yFn(v)}" r="4.5" fill="${color}"><title>${label}</title></circle>`;
+          return `<circle cx="${xFor(i)}" cy="${yFn(v)}" r="4.5" fill="${color}" stroke="#ffffff" stroke-width="2"><title>${label}</title></circle>`;
         }).join('');
-        return `<polyline fill="none" stroke="${color}" stroke-width="3.8" points="${points}" />${dots}`;
+        return `<polyline fill="none" stroke="${color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" points="${points}" />${dots}`;
       };
 
       const xLabels = periodos6.map((p, i) => `
         <text x="${xFor(i)}" y="${h - 10}" text-anchor="middle" font-size="11" fill="#64748b">${formatPeriodoCorto(p)}</text>
       `).join('');
 
-      const ticks = [0, 0.25, 0.5, 0.75, 1];
-      const grid = ticks.map(r => {
-        const y = padding.top + innerH - innerH * r;
-        return `<line x1="${padding.left}" y1="${y}" x2="${w - padding.right}" y2="${y}" stroke="#e2e8f0" />`;
+      const leftTicks = [0, 0.25, 0.5, 0.75, 1];
+      const buildTicks = (min, max, count) => {
+        if (count <= 1 || min === max) return [min];
+        const step = (max - min) / (count - 1);
+        return Array.from({ length: count }, (_, i) => min + step * i);
+      };
+      const rightTicks = buildTicks(minGastoAxis, maxGastoAxis, 5);
+
+      const grid = rightTicks.map(v => {
+        const y = yGasto(v);
+        return `<line x1="${padding.left}" y1="${y}" x2="${w - padding.right}" y2="${y}" stroke="#e5e7eb" />`;
       }).join('');
 
-      const yLabelsLeft = ticks.map(r => {
+      const yLabelsLeft = leftTicks.map(r => {
         const y = padding.top + innerH - innerH * r;
         const val = Math.round(maxKmsRound * r).toLocaleString('es-AR');
         return `<text x="${padding.left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#64748b">${val}</text>`;
       }).join('');
 
-      const yLabelsRight = ticks.map(r => {
-        const y = padding.top + innerH - innerH * r;
-        const val = (maxGastoRound * r) / 1000000;
-        return `<text x="${w - padding.right + 8}" y="${y + 4}" text-anchor="start" font-size="11" fill="#64748b">${val.toFixed(1)}M</text>`;
+      const yLabelsRight = rightTicks.map(v => {
+        const y = yGasto(v);
+        const val = v / 1000000;
+        const label = `${val < 0 ? '-' : ''}${Math.abs(val).toFixed(1)}M`;
+        return `<text x="${w - padding.right + 8}" y="${y + 4}" text-anchor="start" font-size="11" fill="#64748b">${label}</text>`;
       }).join('');
 
       const title = usuario ? `Evolucion 6M - ${usuario}` : 'Evolucion 6M - Total';
 
+      // Construir líneas condicionalmente
+      const lineasGrafico = [];
+
+      // KMs siempre visible
+      lineasGrafico.push(line(kmsSerie, yKms, '#ef4444', (v, p) => `${formatPeriodo(p)} - KMs: ${v.toLocaleString('es-AR')}`));
+
+      // Total Gasto - solo si está activado
+      if (flotaMostrarGasto) {
+        lineasGrafico.push(line(gastoSerie, yGasto, '#3b82f6', (v, p) => `${formatPeriodo(p)} - ${etiquetaGasto}: ${formatCurrency(v)}`));
+      }
+
+      // Amortización - solo si está activado Y es usuario PROPIO
+      if (flotaMostrarAmortizacion && esPropio) {
+        lineasGrafico.push(line(amortizacionSerie, yGasto, '#10b981', (v, p) => `${formatPeriodo(p)} - Amortización: ${formatCurrency(v)}`));
+      }
+
+      // Construir etiquetas del eje derecho
+      const etiquetasDerechas = [];
+      if (flotaMostrarGasto) {
+        etiquetasDerechas.push(`<text x="${w - padding.right}" y="${padding.top - 6}" font-size="11" fill="#3b82f6" text-anchor="end">${etiquetaGasto} (M)</text>`);
+      }
+      if (flotaMostrarAmortizacion && esPropio) {
+        const offsetY = flotaMostrarGasto ? 12 : 0; // Bajar si también se muestra gasto
+        etiquetasDerechas.push(`<text x="${w - padding.right}" y="${padding.top - 6 + offsetY}" font-size="11" fill="#10b981" text-anchor="end">Amortización (M)</text>`);
+      }
+
       const svg = `
         <svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" role="img" aria-label="${title}">
           ${grid}
-          <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${h - padding.bottom}" stroke="#94a3b8" />
-          <line x1="${w - padding.right}" y1="${padding.top}" x2="${w - padding.right}" y2="${h - padding.bottom}" stroke="#94a3b8" />
-          <line x1="${padding.left}" y1="${h - padding.bottom}" x2="${w - padding.right}" y2="${h - padding.bottom}" stroke="#94a3b8" />
+          <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${h - padding.bottom}" stroke="#cbd5e1" />
+          <line x1="${w - padding.right}" y1="${padding.top}" x2="${w - padding.right}" y2="${h - padding.bottom}" stroke="#cbd5e1" />
+          <line x1="${padding.left}" y1="${h - padding.bottom}" x2="${w - padding.right}" y2="${h - padding.bottom}" stroke="#cbd5e1" />
+          ${minGastoAxis < 0 ? `<line x1="${padding.left}" y1="${yGasto(0)}" x2="${w - padding.right}" y2="${yGasto(0)}" stroke="#cbd5e1" stroke-dasharray="4 4" />` : ''}
           ${xLabels}
           ${yLabelsLeft}
           ${yLabelsRight}
-          ${line(kmsSerie, yKms, '#ef4444', (v, p) => `${formatPeriodo(p)} - KMs: ${v.toLocaleString('es-AR')}`)}
-          ${line(gastoSerie, yGasto, '#3b82f6', (v, p) => `${formatPeriodo(p)} - ${etiquetaGasto}: ${formatCurrency(v)}`)}
+          ${lineasGrafico.join('\n          ')}
           <text x="${padding.left}" y="${padding.top - 6}" font-size="11" fill="#ef4444">KMs</text>
-          <text x="${w - padding.right}" y="${padding.top - 6}" font-size="11" fill="#3b82f6" text-anchor="end">${etiquetaGasto} (M)</text>
+          ${etiquetasDerechas.join('\n          ')}
         </svg>
       `;
 
       document.getElementById('flota-chart').innerHTML = svg;
-      
+
       // Actualizar título del gráfico
       const chartTitle = document.getElementById('flota-chart-title');
       if (chartTitle) {
@@ -2184,7 +3667,7 @@
       }
       updateFlotaChartToggle();
     }
-    
+
     function updateFlotaChartToggle() {
       const btn = document.getElementById('flota-chart-toggle');
       if (!btn) return;
@@ -2196,30 +3679,96 @@
         btn.classList.remove('active');
       }
     }
-    
+
     function toggleFlotaChartMode() {
       flotaChartMode = flotaChartMode === 'total' ? 'categoria' : 'total';
       renderFlota();
     }
-    
+
+    function renderFlotaAmortizacionPorKm(periodo) {
+      // Obtener datos de amortización para el periodo
+      const tiposVehiculo = ['Chata', 'Suv', 'Auto'];
+      const datoPeriodo = xKmsData.filter(d => d.periodo === periodo);
+
+      if (datoPeriodo.length === 0) {
+        document.getElementById('flota-amortizacion-km').innerHTML = '<div class="empty-state"><p>No hay datos de amortización para este período</p></div>';
+        return;
+      }
+
+      // Crear objeto de precios por tipo
+      const preciosPorTipo = {};
+      tiposVehiculo.forEach(tipo => {
+        const dato = datoPeriodo.find(d => d.tipo.toLowerCase() === tipo.toLowerCase());
+        preciosPorTipo[tipo] = dato ? dato.precio : null;
+      });
+
+      // Renderizar tabla
+      const html = `
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          ${tiposVehiculo.map(tipo => {
+        const precio = preciosPorTipo[tipo];
+        const precioFormato = precio !== null ? formatCurrency(precio) : '-';
+        const colorFondo = precio === null ? '#fef3c7' : 'var(--bg-secondary)';
+        return `
+              <div style="padding: 1rem; background: ${colorFondo}; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 600;">${tipo}</div>
+                <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary);">${precioFormato}</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">${precio !== null ? '$/km' : 'Sin datos'}</div>
+              </div>
+            `;
+      }).join('')}
+        </div>
+      `;
+
+      document.getElementById('flota-amortizacion-km').innerHTML = html;
+    }
+
     function renderFlotaKPIs(periodo, usuario) {
       const prevPeriodo = getPreviousPeriodo(periodo);
-      
+
       // Obtener categoría seleccionada o usar Combustible por defecto
       const categoriaSelector = document.getElementById('flota-categoria-selector');
       const categoriaSeleccionada = categoriaSelector ? categoriaSelector.value : 'Combustible';
-      
+
       // Poblar selector de categorías si aún no está hecho
       if (categoriaSelector && categoriaSelector.options.length === 0) {
         const categorias = [...new Set(rawData.map(r => r.categoria))].sort();
-        categoriaSelector.innerHTML = categorias.map(cat => 
+        categoriaSelector.innerHTML = categorias.map(cat =>
           `<option value="${cat}" ${cat === 'Combustible' ? 'selected' : ''}>${cat}</option>`
         ).join('');
       }
 
-      const flotaActual = flotaData.filter(f => f.periodo === periodo && (!usuario || f.usuario === usuario));
-      const gastoCategoriaActual = rawData.filter(r => r.periodo === periodo && r.categoria === categoriaSeleccionada && (!usuario || r.usuario === usuario));
-      const gastosTotalActual = rawData.filter(r => r.periodo === periodo && (!usuario || r.usuario === usuario));
+      const flotaActual = flotaData.filter(f => {
+        const periodoMatch = f.periodo === periodo;
+        const usuarioMatch = !usuario || f.usuario === usuario;
+        let regionMatch = true;
+        if (currentRegion) {
+          const usuariosEnRegion = getUsersByRegion(currentRegion);
+          regionMatch = usuariosEnRegion.includes(f.usuario);
+        }
+        return periodoMatch && usuarioMatch && regionMatch;
+      });
+      const gastoCategoriaActual = rawData.filter(r => {
+        const periodoMatch = r.periodo === periodo;
+        const categoriaMatch = r.categoria === categoriaSeleccionada;
+        const usuarioMatch = !usuario || r.usuario === usuario;
+        let regionMatch = true;
+        if (currentRegion) {
+          const usuariosEnRegion = getUsersByRegion(currentRegion);
+          regionMatch = usuariosEnRegion.includes(r.usuario);
+        }
+        return periodoMatch && categoriaMatch && usuarioMatch && regionMatch;
+      });
+      const gastosTotalActual = rawData.filter(r => {
+        const periodoMatch = r.periodo === periodo;
+        const usuarioMatch = !usuario || r.usuario === usuario;
+        let regionMatch = true;
+        if (currentRegion) {
+          const usuariosEnRegion = getUsersByRegion(currentRegion);
+          regionMatch = usuariosEnRegion.includes(r.usuario);
+        }
+        return periodoMatch && usuarioMatch && regionMatch;
+      });
 
       const totalKms = flotaActual.reduce((acc, f) => acc + f.kms, 0);
       const totalCategoria = gastoCategoriaActual.reduce((acc, r) => acc + r.importe, 0);
@@ -2229,9 +3778,37 @@
 
       let prevKms = 0, prevCategoria = 0, prevGastos = 0, prevRatioCategoria = 0, prevRatioTotal = 0;
       if (prevPeriodo) {
-        const flotaPrev = flotaData.filter(f => f.periodo === prevPeriodo && (!usuario || f.usuario === usuario));
-        const gastoCategoriaPrev = rawData.filter(r => r.periodo === prevPeriodo && r.categoria === categoriaSeleccionada && (!usuario || r.usuario === usuario));
-        const gastosTotalPrev = rawData.filter(r => r.periodo === prevPeriodo && (!usuario || r.usuario === usuario));
+        const flotaPrev = flotaData.filter(f => {
+          const periodoMatch = f.periodo === prevPeriodo;
+          const usuarioMatch = !usuario || f.usuario === usuario;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(f.usuario);
+          }
+          return periodoMatch && usuarioMatch && regionMatch;
+        });
+        const gastoCategoriaPrev = rawData.filter(r => {
+          const periodoMatch = r.periodo === prevPeriodo;
+          const categoriaMatch = r.categoria === categoriaSeleccionada;
+          const usuarioMatch = !usuario || r.usuario === usuario;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(r.usuario);
+          }
+          return periodoMatch && categoriaMatch && usuarioMatch && regionMatch;
+        });
+        const gastosTotalPrev = rawData.filter(r => {
+          const periodoMatch = r.periodo === prevPeriodo;
+          const usuarioMatch = !usuario || r.usuario === usuario;
+          let regionMatch = true;
+          if (currentRegion) {
+            const usuariosEnRegion = getUsersByRegion(currentRegion);
+            regionMatch = usuariosEnRegion.includes(r.usuario);
+          }
+          return periodoMatch && usuarioMatch && regionMatch;
+        });
         prevKms = flotaPrev.reduce((acc, f) => acc + f.kms, 0);
         prevCategoria = gastoCategoriaPrev.reduce((acc, r) => acc + r.importe, 0);
         prevGastos = gastosTotalPrev.reduce((acc, r) => acc + r.importe, 0);
@@ -2325,42 +3902,42 @@
       document.getElementById('flota-kpi-combustible').innerHTML = kpiCombHtml;
       document.getElementById('flota-kpi-total').innerHTML = kpiTotalHtml;
     }
-    
+
     function renderFlotaRankingKm(periodo, usuarioSeleccionado = null) {
       // Si hay usuario seleccionado, mostrar desglose por categoría de ese usuario
       if (usuarioSeleccionado) {
         const periodosList = [...new Set(rawData.map(r => r.periodo))].sort();
         const periodoIdx = periodosList.indexOf(periodo);
         const periodoAnterior = periodoIdx > 0 ? periodosList[periodoIdx - 1] : null;
-        
+
         const categorias = [...new Set(rawData.map(r => r.categoria))];
         const kmsUsuario = flotaData
           .filter(f => f.periodo === periodo && f.usuario === usuarioSeleccionado)
           .reduce((acc, f) => acc + f.kms, 0);
-        
+
         const kmsUsuarioAnterior = periodoAnterior ? flotaData
           .filter(f => f.periodo === periodoAnterior && f.usuario === usuarioSeleccionado)
           .reduce((acc, f) => acc + f.kms, 0) : 0;
-        
+
         const categoriaData = categorias.map(cat => {
           const gasto = rawData
             .filter(r => r.periodo === periodo && r.usuario === usuarioSeleccionado && r.categoria === cat)
             .reduce((acc, r) => acc + r.importe, 0);
-          
+
           const gastoAnterior = periodoAnterior ? rawData
             .filter(r => r.periodo === periodoAnterior && r.usuario === usuarioSeleccionado && r.categoria === cat)
             .reduce((acc, r) => acc + r.importe, 0) : 0;
-          
+
           const ratioKm = kmsUsuario > 0 ? gasto / kmsUsuario : 0;
           const ratioKmAnterior = kmsUsuarioAnterior > 0 ? gastoAnterior / kmsUsuarioAnterior : 0;
-          
+
           const deltaGasto = gastoAnterior > 0 ? ((gasto - gastoAnterior) / gastoAnterior) * 100 : 0;
           const deltaRatio = ratioKmAnterior > 0 ? ((ratioKm - ratioKmAnterior) / ratioKmAnterior) * 100 : 0;
-          
+
           return { categoria: cat, gasto, gastoAnterior, ratioKm, deltaGasto, deltaRatio };
         }).filter(c => c.gasto > 0)
           .sort((a, b) => b.gasto - a.gasto);
-        
+
         const html = categoriaData.length > 0 ? `
           <div style="padding: 0.75rem 1rem; background: var(--blue-dark); color: white; border-radius: 6px; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.85rem;">
             ${usuarioSeleccionado} - Desglose por Categoría
@@ -2379,41 +3956,47 @@
             </div>
           `).join('')}
         ` : '<div class="empty-state" style="padding: 2rem;"><p>No hay datos disponibles</p></div>';
-        
+
         document.getElementById('flota-ranking-km').innerHTML = html;
         return;
       }
-      
+
       // Vista por defecto: top usuario por categoría
       const categorias = [...new Set(rawData.map(r => r.categoria))];
-      
+
       const rankingData = categorias.map(cat => {
         // Calcular gasto total por usuario en esta categoría
-        const usuarios = [...new Set(rawData.filter(r => r.periodo === periodo && r.categoria === cat).map(r => r.usuario))];
+        let usuarios = [...new Set(rawData.filter(r => r.periodo === periodo && r.categoria === cat).map(r => r.usuario))];
         
+        // Filtrar usuarios por región si está seleccionada
+        if (currentRegion) {
+          const usuariosEnRegion = getUsersByRegion(currentRegion);
+          usuarios = usuarios.filter(u => usuariosEnRegion.includes(u));
+        }
+
         const usuariosData = usuarios.map(usuario => {
           const gasto = rawData
             .filter(r => r.periodo === periodo && r.usuario === usuario && r.categoria === cat)
             .reduce((acc, r) => acc + r.importe, 0);
-          
+
           const kms = flotaData
             .filter(f => f.periodo === periodo && f.usuario === usuario)
             .reduce((acc, f) => acc + f.kms, 0);
-          
+
           const ratioKm = kms > 0 ? gasto / kms : 0;
-          
+
           return { usuario, gasto, kms, ratioKm };
         }).filter(u => u.kms > 0 && u.ratioKm > 0)
           .sort((a, b) => b.gasto - a.gasto)
           .slice(0, 1); // Top 1 por categoría
-        
+
         return {
           categoria: cat,
           top: usuariosData[0] || null
         };
       }).filter(r => r.top !== null)
         .sort((a, b) => b.top.gasto - a.top.gasto);
-      
+
       const html = rankingData.length > 0 ? rankingData.map(r => {
         const catEscaped = r.categoria.replace(/'/g, "\\'");
         return `
@@ -2425,39 +4008,45 @@
         </div>
       `;
       }).join('') : '<div class="empty-state"><p>No hay datos disponibles</p></div>';
-      
+
       document.getElementById('flota-ranking-km').innerHTML = html;
     }
-    
+
     function showFlotaRankingByCategory(categoria, periodo) {
       // Obtener período anterior para calcular desvío
       const periodosList = [...new Set(rawData.map(r => r.periodo))].sort();
       const periodoIdx = periodosList.indexOf(periodo);
       const periodoAnterior = periodoIdx > 0 ? periodosList[periodoIdx - 1] : null;
-      
+
       // Calcular ranking por usuario en esta categoría
-      const usuarios = [...new Set(rawData.filter(r => r.periodo === periodo && r.categoria === categoria).map(r => r.usuario))];
+      let usuarios = [...new Set(rawData.filter(r => r.periodo === periodo && r.categoria === categoria).map(r => r.usuario))];
       
+      // Filtrar usuarios por región si está seleccionada
+      if (currentRegion) {
+        const usuariosEnRegion = getUsersByRegion(currentRegion);
+        usuarios = usuarios.filter(u => usuariosEnRegion.includes(u));
+      }
+
       const ranking = usuarios.map(usuario => {
         const gasto = rawData
           .filter(r => r.periodo === periodo && r.usuario === usuario && r.categoria === categoria)
           .reduce((acc, r) => acc + r.importe, 0);
-        
+
         const gastoAnterior = periodoAnterior ? rawData
           .filter(r => r.periodo === periodoAnterior && r.usuario === usuario && r.categoria === categoria)
           .reduce((acc, r) => acc + r.importe, 0) : 0;
-        
+
         const kms = flotaData
           .filter(f => f.periodo === periodo && f.usuario === usuario)
           .reduce((acc, f) => acc + f.kms, 0);
-        
+
         const ratioKm = kms > 0 ? gasto / kms : 0;
         const desvio = (gastoAnterior > 0) ? ((gasto - gastoAnterior) / gastoAnterior) * 100 : (gasto > 0 ? 100 : 0);
-        
+
         return { usuario, gasto, kms, ratioKm, desvio, gastoAnterior };
       }).filter(u => u.gasto > 0)
         .sort((a, b) => b.gasto - a.gasto);
-      
+
       // Renderizar en la sección de Detalle Usuario
       const html = `
         <div style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-hover); border-radius: 8px; border: 1px solid var(--border);">
@@ -2496,14 +4085,58 @@
           </div>
         `).join('') : '<div class="empty-state"><p>No hay datos disponibles</p></div>'}
       `;
-      
+
       document.getElementById('flota-list').innerHTML = html;
     }
-    
+
     function selectFlotaUsuario(usuario) {
       document.getElementById('flota-busqueda').value = usuario;
+
+      // Determinar si el usuario tiene vehículo PROPIO
+      const periodo = document.getElementById('flota-periodo').value;
+      const userData = flotaData.find(f => f.periodo === periodo && f.usuario === usuario);
+      const esPropio = userData && (userData.propio || '').toUpperCase() === 'PROPIO';
+
+      // Guardar los datos completos del usuario seleccionado
+      flotaUsuarioSeleccionado = userData || { usuario: usuario, propio: '-' };
+
+      // Mostrar/ocultar toggles de gráfico según tipo de vehículo
+      const togglesDiv = document.getElementById('flota-chart-toggles');
+      if (togglesDiv) {
+        if (esPropio) {
+          togglesDiv.style.display = 'flex';
+        } else {
+          // Si es DCAC, ocultar toggles y resetear checkboxes
+          togglesDiv.style.display = 'none';
+          flotaMostrarGasto = true;
+          flotaMostrarAmortizacion = true;
+          document.getElementById('flota-show-gasto').checked = true;
+          document.getElementById('flota-show-amortizacion').checked = true;
+        }
+      }
+
+      renderFlota();
+    }
+
+    function toggleFlotaGasto() {
+      flotaMostrarGasto = document.getElementById('flota-show-gasto').checked;
+      const periodo = document.getElementById('flota-periodo').value;
+      const usuario = flotaUsuarioSeleccionado ? flotaUsuarioSeleccionado.usuario : null;
+      renderFlotaChart(periodo, usuario);
+    }
+
+    function toggleFlotaAmortizacion() {
+      flotaMostrarAmortizacion = document.getElementById('flota-show-amortizacion').checked;
+      const periodo = document.getElementById('flota-periodo').value;
+      const usuario = flotaUsuarioSeleccionado ? flotaUsuarioSeleccionado.usuario : null;
+      renderFlotaChart(periodo, usuario);
+    }
+
+    function limpiarBusquedaFlota() {
+      document.getElementById('flota-busqueda').value = '';
       renderFlota();
     }
   </script>
 </body>
+
 </html>
